@@ -1,9 +1,9 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Image } from "react-native";
-import Header from "@/components/Header";
-import BalanceOverview from "@/components/BalanceOverview";
-import TransactionManager from "@/components/TransactionManager";
-import AddButton from "@/components/AddButton";
+import Header from "@/components/Home/Header";
+import BalanceOverview from "@/components/Home/BalanceOverview";
+import TransactionManager from "@/components/Home/TransactionManager";
+import AddButton from "@/components/Home/AddButton";
 
 export default function HomeScreen() {
   return (
