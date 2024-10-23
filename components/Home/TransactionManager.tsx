@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import TabSelector from "@/components/TabSelector";
-import ContentDisplay from "@/components/ContentDisplay";
+import TabSelector from "@/components/Home/TabSelector";
+import ContentDisplay from "@/components/Home/ContentDisplay";
 
 export default function TransactionManager() {
   const [activeTab, setActiveTab] = useState("income");
