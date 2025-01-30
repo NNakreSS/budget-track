@@ -226,10 +226,10 @@ const styles = StyleSheet.create({
   dateText: {
     color: "#888",
     backgroundColor: "rgb(33, 33, 33)",
-    paddingVertical: 8,
+    paddingVertical: 4,
     paddingHorizontal: 16,
     borderRadius: 27,
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 10,
   },
   hiddenAmount: {
