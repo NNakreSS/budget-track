@@ -1,17 +1,111 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+// Hesap tipi için tip tanımı
+type AccountType = {
+  id: string;
+  name: string;
+  type: "personal" | "business";
+  icon: keyof typeof Ionicons.glyphMap;
+};
+
+// Mock hesap verileri
+const mockAccounts: AccountType[] = [
+  {
+    id: "1",
+    name: "Bireysel",
+    type: "personal",
+    icon: "person",
+  },
+  {
+    id: "2",
+    name: "Dükkan",
+    type: "business",
+    icon: "business",
+  },
+  {
+    id: "3",
+    name: "Yatırım",
+    type: "personal",
+    icon: "trending-up",
+  },
+];
+
 export default function Header() {
+  const [showAccountSelector, setShowAccountSelector] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<AccountType>(
+    mockAccounts[0]
+  );
+
   return (
-    <View style={styles.header}>
-      <Ionicons name="beer-outline" size={24} color="white" />
-      <View style={styles.dropdown}>
-        <Text style={styles.dropdownText}>Bireysel</Text>
-        <Ionicons name="chevron-down" size={22} color="white" />
+    <>
+      <View style={styles.header}>
+        <Ionicons name="beer-outline" size={24} color="white" />
+        <TouchableOpacity
+          style={styles.dropdown}
+          onPress={() => setShowAccountSelector(true)}
+        >
+          <Text style={styles.dropdownText}>{selectedAccount.name}</Text>
+          <Ionicons name="chevron-down" size={22} color="white" />
+        </TouchableOpacity>
+        <Ionicons name="settings-outline" size={24} color="white" />
       </View>
-      <Ionicons name="settings-outline" size={24} color="white" />
-    </View>
+
+      <Modal
+        visible={showAccountSelector}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowAccountSelector(false)}
+      >
+        <View style={styles.accountDrawerContainer}>
+          <Pressable
+            style={styles.accountDrawerOverlay}
+            onPress={() => setShowAccountSelector(false)}
+          />
+          <View style={styles.accountDrawer}>
+            <View style={styles.drawerHandle} />
+            <Text style={styles.drawerTitle}>Hesaplar</Text>
+
+            {/* Hesap Listesi */}
+            {mockAccounts.map((account) => (
+              <TouchableOpacity
+                key={account.id}
+                style={[
+                  styles.accountItem,
+                  selectedAccount.id === account.id && styles.selectedAccount,
+                ]}
+                onPress={() => {
+                  setSelectedAccount(account);
+                  setShowAccountSelector(false);
+                }}
+              >
+                <View style={styles.accountItemContent}>
+                  <Ionicons name={account.icon} size={24} color="white" />
+                  <Text style={styles.accountItemText}>{account.name}</Text>
+                </View>
+                {selectedAccount.id === account.id && (
+                  <Ionicons name="checkmark" size={24} color="#4CAF50" />
+                )}
+              </TouchableOpacity>
+            ))}
+
+            {/* Hesap Ekle Butonu */}
+            <TouchableOpacity style={styles.addAccountButton}>
+              <Ionicons name="add-circle-outline" size={24} color="white" />
+              <Text style={styles.addAccountText}>Yeni Hesap Ekle</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
 
@@ -36,5 +130,70 @@ const styles = StyleSheet.create({
     color: "rgba(240, 240, 243, 0.86)",
     fontSize: 16,
     marginRight: 5,
+  },
+  accountDrawerContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  accountDrawerOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  accountDrawer: {
+    backgroundColor: "rgb(20, 21, 23)",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 16,
+    paddingTop: 8,
+  },
+  drawerHandle: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#666",
+    borderRadius: 2,
+    alignSelf: "center",
+    marginBottom: 16,
+  },
+  drawerTitle: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  accountItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+  },
+  selectedAccount: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+  },
+  accountItemContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  accountItemText: {
+    color: "white",
+    fontSize: 16,
+  },
+  addAccountButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    marginTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.1)",
+  },
+  addAccountText: {
+    color: "white",
+    fontSize: 16,
   },
 });
