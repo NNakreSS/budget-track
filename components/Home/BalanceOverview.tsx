@@ -7,7 +7,7 @@ import {
   Pressable,
   Modal,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 // Seçenekler için tip tanımı
 type OptionType = {
@@ -78,9 +78,9 @@ export default function BalanceOverview() {
           color="#888"
         />
         <Text style={styles.balanceLabel}>{selectedOption}</Text>
-        <Ionicons
-          name={showOptions ? "chevron-up" : "chevron-down"}
-          size={16}
+        <Entypo
+          name={showOptions ? "chevron-thin-up" : "chevron-thin-down"}
+          size={12}
           color="#888"
         />
       </TouchableOpacity>
