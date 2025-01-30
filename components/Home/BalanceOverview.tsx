@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   balanceLabel: {
     color: "#888",
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   balanceRow: {
     flexDirection: "row",
