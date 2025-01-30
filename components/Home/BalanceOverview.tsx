@@ -1,9 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+  Modal,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+// Seçenekler için tip tanımı
+type OptionType = {
+  label: "Öngörülen" | "Güncel" | "Gizli";
+  icon: keyof typeof Ionicons.glyphMap;
+  description: string;
+};
 
 export default function BalanceOverview() {
   const [currentDate, setCurrentDate] = useState("");
+  const [selectedOption, setSelectedOption] = useState<
+    "Öngörülen" | "Güncel" | "Gizli"
+  >("Öngörülen");
+  const [showOptions, setShowOptions] = useState(false);
+
+  const [calculatedAmount] = useState(15000.75);
+  const options: OptionType[] = [
+    {
+      label: "Öngörülen",
+      icon: "calendar",
+      description: "Ay sonuna kadar beklenen toplam",
+    },
+    {
+      label: "Güncel",
+      icon: "cash",
+      description: "Şu ana kadar gerçekleşen işlemler",
+    },
+    {
+      label: "Gizli",
+      icon: "eye-off",
+      description: "Miktarı gizle",
+    },
+  ];
 
   useEffect(() => {
     const date = new Date();
@@ -19,16 +56,92 @@ export default function BalanceOverview() {
     setCurrentDate(formattedDate);
   }, []);
 
+  const renderAmount = () => {
+    if (selectedOption === "Gizli") {
+      return "******";
+    }
+    return `₺${calculatedAmount.toLocaleString("tr-TR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
+
   return (
     <View style={styles.balanceContainer}>
-      <Text style={styles.balanceLabel}>Genel Bakış</Text>
+      <TouchableOpacity
+        style={styles.selectorContainer}
+        onPress={() => setShowOptions(!showOptions)}
+      >
+        <Ionicons
+          name={options.find((o) => o.label === selectedOption)?.icon || "help"}
+          size={16}
+          color="#888"
+        />
+        <Text style={styles.balanceLabel}>{selectedOption}</Text>
+        <Ionicons
+          name={showOptions ? "chevron-up" : "chevron-down"}
+          size={16}
+          color="#888"
+        />
+      </TouchableOpacity>
+
+      <Modal
+        visible={showOptions}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowOptions(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowOptions(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.optionsContainer}>
+              <Text style={styles.modalTitle}>Hesaplama Türü</Text>
+              {options.map((option) => (
+                <TouchableOpacity
+                  key={option.label}
+                  style={styles.optionItem}
+                  onPress={() => {
+                    setSelectedOption(option.label);
+                    setShowOptions(false);
+                  }}
+                >
+                  <View style={styles.optionContent}>
+                    <Ionicons name={option.icon} size={18} color="#888" />
+                    <View style={styles.optionTextContainer}>
+                      <Text style={styles.optionTitle}>{option.label}</Text>
+                      <Text style={styles.optionDescription}>
+                        {option.description}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
       <View style={styles.balanceRow}>
         <TouchableOpacity>
           <Ionicons name="chevron-back" size={24} color="rgb(179, 179, 179)" />
         </TouchableOpacity>
-        <Text style={styles.balanceAmount}>₺0</Text>
+        <Text
+          style={[
+            styles.balanceAmount,
+            selectedOption === "Gizli" && styles.hiddenAmount,
+          ]}
+        >
+          {renderAmount()}
+        </Text>
         <TouchableOpacity>
-          <Ionicons name="chevron-forward" size={24} color="rgb(179, 179, 179)" />
+          <Ionicons
+            name="chevron-forward"
+            size={24}
+            color="rgb(179, 179, 179)"
+          />
         </TouchableOpacity>
       </View>
       <Text style={styles.dateText}>{currentDate}</Text>
@@ -43,8 +156,61 @@ const styles = StyleSheet.create({
   },
   balanceLabel: {
     color: "#888",
-    fontSize: 16,
-    marginBottom: 10,
+  },
+  selectorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  fullScreenOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    zIndex: 999,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "80%",
+    maxWidth: 400,
+  },
+  optionsContainer: {
+    backgroundColor: "rgba(20, 21, 23, 0.95)",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "rgba(179, 179, 179, 0.3)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 5,
+  },
+  optionItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    width: 200,
+  },
+  optionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  optionTextContainer: {
+    flex: 1,
+  },
+  optionTitle: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  optionDescription: {
+    color: "#888",
+    fontSize: 12,
+    marginTop: 4,
   },
   balanceRow: {
     flexDirection: "row",
@@ -65,5 +231,15 @@ const styles = StyleSheet.create({
     borderRadius: 27,
     fontSize: 14,
     marginTop: 10,
+  },
+  hiddenAmount: {
+    color: "#888",
+    letterSpacing: 2,
+  },
+  modalTitle: {
+    color: "#666",
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: "center",
   },
 });
