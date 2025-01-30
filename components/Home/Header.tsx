@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Entypo from '@expo/vector-icons/Entypo';
 
 // Hesap tipi için tip tanımı
 type AccountType = {
@@ -54,7 +55,7 @@ export default function Header() {
           onPress={() => setShowAccountSelector(true)}
         >
           <Text style={styles.dropdownText}>{selectedAccount.name}</Text>
-          <Ionicons name="chevron-down" size={22} color="white" />
+          <Entypo name="chevron-thin-down" size={12} color="white" />
         </TouchableOpacity>
         <Ionicons name="settings-outline" size={24} color="white" />
       </View>
