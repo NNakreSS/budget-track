@@ -4,7 +4,7 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import CustomDatePicker from "../Common/CustomDatePicker";
 import { useBalanceStore } from "../../store/useBalanceStore";
-import { formatCurrency } from "../../utils/currency";
+import { useFormatCurrency } from "../../utils/currency";
 import { ViewType } from "../../types/store";
 
 type OptionType = {
@@ -16,6 +16,7 @@ type OptionType = {
 
 export default function BalanceOverview() {
   const { t } = useTranslation();
+  const formatCurrency = useFormatCurrency();
   const [showOptions, setShowOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);

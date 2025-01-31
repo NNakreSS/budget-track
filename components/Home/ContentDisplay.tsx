@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
+import { useFormatCurrency } from "@/utils/currency";
 
 interface ContentDisplayProps {
   activeTab: "income" | "expense";
@@ -94,6 +95,7 @@ const mockExpenseTransactions: Transaction[] = [
 ];
 
 export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
+  const formatCurrency = useFormatCurrency();
   // İki ayrı state tanımı
   const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>(
     mockIncomeTransactions
@@ -171,8 +173,8 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
             { color: activeTab === "income" ? "#4CAF50" : "white" },
           ]}
         >
-          {activeTab === "expense" ? "-" : "+"}₺
-          {transaction.amount.toLocaleString()}
+          {activeTab === "expense" ? "-" : "+"}
+          {formatCurrency(transaction.amount)}
         </Text>
         <Text
           style={[
