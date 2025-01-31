@@ -86,18 +86,17 @@ export default function BalanceOverview() {
         animationType="fade"
         onRequestClose={() => setShowOptions(false)}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowOptions(false)}
-        >
+        <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.optionsContainer}>
               <Text style={styles.modalTitle}>Hesaplama Türü</Text>
               {options.map((option) => (
                 <TouchableOpacity
                   key={option.label}
-                  style={styles.optionItem}
+                  style={[
+                    styles.optionItem,
+                    selectedOption === option.label && styles.selectedItem,
+                  ]}
                   onPress={() => {
                     setSelectedOption(option.label);
                     setShowOptions(false);
@@ -116,7 +115,7 @@ export default function BalanceOverview() {
               ))}
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
       </Modal>
 
       <View style={styles.balanceRow}>
@@ -263,6 +262,10 @@ const styles = StyleSheet.create({
   },
   selectedItem: {
     backgroundColor: "rgba(255,255,255,0.1)",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(179, 179, 179, 0.3)",
+    width: "100%",
   },
   selectedItemText: {
     color: "white",
