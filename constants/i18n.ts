@@ -13,15 +13,26 @@ const resources = {
   en: {
     translation: en,
   },
+} as const;
+
+// Varsayılan dili belirle
+const getDefaultLanguage = () => {
+  const deviceLang = Localization.locale.split("-")[0];
+  return deviceLang in resources ? deviceLang : "tr";
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: Localization.locale.split("-")[0],
-  fallbackLng: "tr",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: getDefaultLanguage(),
+    fallbackLng: "tr",
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false
+    }
+  });
 
 export default i18n;

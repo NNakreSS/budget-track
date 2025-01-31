@@ -8,13 +8,13 @@ import {
   Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Entypo from '@expo/vector-icons/Entypo';
-import { useTranslation } from 'react-i18next';
+import Entypo from "@expo/vector-icons/Entypo";
+import { useTranslation } from "react-i18next";
 
 // Hesap tipi için tip tanımı
 type AccountType = {
   id: string;
-  name: string;
+  nameKey: "personal" | "business" | "investment";
   type: "personal" | "business";
   icon: keyof typeof Ionicons.glyphMap;
 };
@@ -23,19 +23,19 @@ type AccountType = {
 const mockAccounts: AccountType[] = [
   {
     id: "1",
-    name: "Bireysel",
+    nameKey: "personal",
     type: "personal",
     icon: "person",
   },
   {
     id: "2",
-    name: "Dükkan",
+    nameKey: "business",
     type: "business",
     icon: "business",
   },
   {
     id: "3",
-    name: "Yatırım",
+    nameKey: "investment",
     type: "personal",
     icon: "trending-up",
   },
@@ -49,8 +49,13 @@ export default function Header() {
   );
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'tr' ? 'en' : 'tr';
+    const newLang = i18n.language === "tr" ? "en" : "tr";
     i18n.changeLanguage(newLang);
+  };
+
+  // Dil kodunu güvenli bir şekilde al
+  const getCurrentLanguage = () => {
+    return (i18n.language || "tr").split("-")[0].toUpperCase();
   };
 
   return (
@@ -58,13 +63,15 @@ export default function Header() {
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleLanguage} style={styles.langButton}>
           <Ionicons name="language" size={24} color="#888" />
-          <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+          <Text style={styles.langText}>{getCurrentLanguage()}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.dropdown}
           onPress={() => setShowAccountSelector(true)}
         >
-          <Text style={styles.dropdownText}>{selectedAccount.name}</Text>
+          <Text style={styles.dropdownText}>
+            {t(`accounts.names.${selectedAccount.nameKey}`)}
+          </Text>
           <Entypo name="chevron-thin-down" size={12} color="white" />
         </TouchableOpacity>
         <Ionicons name="settings-outline" size={24} color="white" />
@@ -83,7 +90,7 @@ export default function Header() {
           />
           <View style={styles.accountDrawer}>
             <View style={styles.drawerHandle} />
-            <Text style={styles.drawerTitle}>{t('common.accounts')}</Text>
+            <Text style={styles.drawerTitle}>{t("common.accounts")}</Text>
 
             {/* Hesap Listesi */}
             {mockAccounts.map((account) => (
@@ -100,7 +107,9 @@ export default function Header() {
               >
                 <View style={styles.accountItemContent}>
                   <Ionicons name={account.icon} size={24} color="white" />
-                  <Text style={styles.accountItemText}>{account.name}</Text>
+                  <Text style={styles.accountItemText}>
+                    {t(`accounts.names.${account.nameKey}`)}
+                  </Text>
                 </View>
                 {selectedAccount.id === account.id && (
                   <Ionicons name="checkmark" size={24} color="#4CAF50" />
@@ -111,7 +120,9 @@ export default function Header() {
             {/* Hesap Ekle Butonu */}
             <TouchableOpacity style={styles.addAccountButton}>
               <Ionicons name="add-circle-outline" size={24} color="white" />
-              <Text style={styles.addAccountText}>{t('common.addNewAccount')}</Text>
+              <Text style={styles.addAccountText}>
+                {t("common.addNewAccount")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
