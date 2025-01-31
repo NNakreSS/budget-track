@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { BalanceState, Transaction, Account } from '../types/store';
+import { BalanceState, Account } from '../types/store';
 
 // Mock hesap verileri
 const mockAccounts: Account[] = [
@@ -29,7 +29,8 @@ export const useBalanceStore = create<BalanceState>((set) => ({
   accounts: mockAccounts,
   transactions: [],
   calculatedAmount: 15000.75,
-  selectedViewType: 'predicted',
+  viewType: 'predicted',
+  isHidden: false,
 
   // Transaction işlemleri
   addTransaction: (transaction) =>
@@ -72,7 +73,8 @@ export const useBalanceStore = create<BalanceState>((set) => ({
 
   // Tarih ve görünüm ayarları
   setSelectedDate: (date) => set({ selectedDate: date }),
-  setSelectedViewType: (type) => set({ selectedViewType: type }),
+  setViewType: (type) => set({ viewType: type }),
+  toggleHidden: () => set((state) => ({ isHidden: !state.isHidden })),
 
   // Hesap işlemleri
   setSelectedAccount: (account) => set({ selectedAccount: account }),
