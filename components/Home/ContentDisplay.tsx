@@ -95,16 +95,22 @@ const mockExpenseTransactions: Transaction[] = [
 
 export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
   // İki ayrı state tanımı
-  const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>(mockIncomeTransactions);
-  const [expenseTransactions, setExpenseTransactions] = useState<Transaction[]>(mockExpenseTransactions);
+  const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>(
+    mockIncomeTransactions
+  );
+  const [expenseTransactions, setExpenseTransactions] = useState<Transaction[]>(
+    mockExpenseTransactions
+  );
 
   // Aktif tab'e göre doğru state'i seç
-  const transactions = activeTab === "income" ? incomeTransactions : expenseTransactions;
-  const setTransactions = activeTab === "income" ? setIncomeTransactions : setExpenseTransactions;
+  const transactions =
+    activeTab === "income" ? incomeTransactions : expenseTransactions;
+  const setTransactions =
+    activeTab === "income" ? setIncomeTransactions : setExpenseTransactions;
 
   const toggleComplete = (id: string) => {
-    setTransactions(prevTransactions =>
-      prevTransactions.map(transaction =>
+    setTransactions((prevTransactions) =>
+      prevTransactions.map((transaction) =>
         transaction.id === id
           ? { ...transaction, isCompleted: !transaction.isCompleted }
           : transaction
@@ -117,7 +123,7 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
       key={transaction.id}
       style={[
         styles.transactionCard,
-        transaction.isCompleted && styles.completedCard
+        transaction.isCompleted && styles.completedCard,
       ]}
     >
       {/* Sol taraf - Checkbox */}
@@ -159,10 +165,12 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
 
       {/* Sağ taraf - Miktar ve Durum */}
       <View style={styles.amountSection}>
-        <Text style={[
-          styles.amountText,
-          { color: activeTab === "income" ? "#4CAF50" : "white" }
-        ]}>
+        <Text
+          style={[
+            styles.amountText,
+            { color: activeTab === "income" ? "#4CAF50" : "white" },
+          ]}
+        >
           {activeTab === "expense" ? "-" : "+"}₺
           {transaction.amount.toLocaleString()}
         </Text>
@@ -201,7 +209,6 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 16,
   },
   transactionCard: {
     flexDirection: "row",
