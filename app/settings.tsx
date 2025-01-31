@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import SectionCard from "@/components/Settings/SectionCard";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
@@ -25,7 +26,7 @@ export default function Settings() {
         <Text style={styles.title}>{t("common.settings")}</Text>
       </View>
 
-      <View style={styles.content}>
+      <SectionCard title={t("settings.system")}>
         <TouchableOpacity style={styles.settingItem} onPress={toggleLanguage}>
           <View style={styles.settingLeft}>
             <Ionicons name="language" size={24} color="white" />
@@ -35,7 +36,7 @@ export default function Settings() {
             {i18n.language === "tr" ? "Türkçe" : "English"}
           </Text>
         </TouchableOpacity>
-      </View>
+      </SectionCard>
     </View>
   );
 }
@@ -43,31 +44,30 @@ export default function Settings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgb(20, 21, 23)",
+    backgroundColor: "#000000",
+    padding: 10,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.1)",
+    padding: 10,
   },
   backButton: {
-    marginRight: 16,
+    marginRight: 10,
   },
   title: {
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: "400",
     color: "white",
   },
   content: {
-    padding: 16,
+    padding: 10,
   },
   settingItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 16,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255,255,255,0.1)",
   },
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   settingText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "white",
   },
   settingValue: {
-    fontSize: 16,
+    fontSize: 14,
     color: "rgba(255,255,255,0.6)",
   },
 });
