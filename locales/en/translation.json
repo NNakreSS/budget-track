@@ -81,5 +81,8 @@
     "rent": "Rent",
     "creditCard": "Credit Card",
     "invoice": "Invoice"
+  },
+  "settings": {
+    "system": "System"
   }
 }

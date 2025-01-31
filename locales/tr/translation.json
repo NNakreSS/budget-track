@@ -81,5 +81,8 @@
     "rent": "Kira",
     "creditCard": "K.Kartı",
     "invoice": "Fatura"
+  },
+  "settings": {
+    "system": "Sistem"
   }
 }
