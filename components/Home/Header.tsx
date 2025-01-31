@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "expo-router";
 
 // Hesap tipi için tip tanımı
 type AccountType = {
@@ -43,6 +44,7 @@ const mockAccounts: AccountType[] = [
 
 export default function Header() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<AccountType>(
     mockAccounts[0]
@@ -74,7 +76,9 @@ export default function Header() {
           </Text>
           <Entypo name="chevron-thin-down" size={12} color="white" />
         </TouchableOpacity>
-        <Ionicons name="settings-outline" size={24} color="white" />
+        <TouchableOpacity onPress={() => router.push("/settings")}>
+          <Ionicons name="settings-outline" size={24} color="white" />
+        </TouchableOpacity>
       </View>
 
       <Modal
