@@ -7,6 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useThemeStore } from "@/store/theme";
 
 interface SelectBoxProps {
   value: string;
@@ -22,10 +23,70 @@ export default function SelectBox({
   placeholder,
 }: SelectBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const theme = useThemeStore((state) => state.theme);
 
   const selectedOption = options.find((opt) => opt.value === value);
 
-  const ItemSeparator = () => <View style={{ height: 5 }} />;
+  const ItemSeparator = () => <View style={{ height: theme.spacing.xs }} />;
+
+  const styles = StyleSheet.create({
+    container: {
+      position: "relative",
+      zIndex: 1000,
+    },
+    selectButton: {
+      borderWidth: 1,
+      borderColor: theme.colors.border.primary,
+      borderRadius: theme.borderRadius.md,
+      padding: theme.spacing.md,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    selectButtonActive: {
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+      borderBottomWidth: 0,
+    },
+    selectButtonText: {
+      fontSize: theme.fontSize.lg,
+      color: theme.colors.text.tertiary,
+    },
+    dropdownContainer: {
+      position: "absolute",
+      top: "100%",
+      left: 0,
+      right: 0,
+      backgroundColor: theme.colors.background.primary,
+      borderWidth: 1,
+      borderColor: theme.colors.border.primary,
+      borderRadius: theme.borderRadius.md,
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+      maxHeight: 200,
+      overflow: "hidden",
+    },
+    listContainer: {
+      padding: theme.spacing.xs,
+    },
+    option: {
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.md,
+      borderColor: theme.colors.border.primary,
+      borderWidth: 1,
+    },
+    selectedOption: {
+      borderWidth: 0,
+      backgroundColor: theme.colors.button.secondary,
+    },
+    optionText: {
+      fontSize: theme.fontSize.md,
+      color: theme.colors.text.secondary,
+    },
+    selectedOptionText: {
+      color: theme.colors.text.primary,
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -39,7 +100,7 @@ export default function SelectBox({
         <Ionicons
           name={isOpen ? "chevron-up" : "chevron-down"}
           size={20}
-          color="rgba(255,255,255,0.6)"
+          color={theme.colors.text.tertiary}
         />
       </TouchableOpacity>
 
@@ -77,62 +138,3 @@ export default function SelectBox({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: "relative",
-    zIndex: 1000,
-  },
-  selectButton: {
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    borderRadius: 10,
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  selectButtonActive: {
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderBottomWidth: 0,
-  },
-  selectButtonText: {
-    fontSize: 18,
-    color: "rgba(255,255,255,0.6)",
-  },
-  dropdownContainer: {
-    position: "absolute",
-    top: "100%",
-    left: 0,
-    right: 0,
-    backgroundColor: "rgb(20,21,23)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    borderRadius: 10,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    maxHeight: 200,
-    overflow: "hidden",
-  },
-  listContainer: {
-    padding: 4,
-  },
-  option: {
-    padding: 10,
-    borderRadius: 10,
-    borderColor: "rgba(255,255,255,0.1)",
-    borderWidth: 1,
-  },
-  selectedOption: {
-    borderWidth: 0,
-    backgroundColor: "rgba(255,255,255,0.1)",
-  },
-  optionText: {
-    fontSize: 16,
-    color: "rgba(255,255,255,0.8)",
-  },
-  selectedOptionText: {
-    color: "white",
-  },
-});
