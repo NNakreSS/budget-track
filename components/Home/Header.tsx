@@ -43,29 +43,18 @@ const mockAccounts: AccountType[] = [
 ];
 
 export default function Header() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<AccountType>(
     mockAccounts[0]
   );
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "tr" ? "en" : "tr";
-    i18n.changeLanguage(newLang);
-  };
-
-  // Dil kodunu güvenli bir şekilde al
-  const getCurrentLanguage = () => {
-    return (i18n.language || "tr").split("-")[0].toUpperCase();
-  };
-
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity onPress={toggleLanguage} style={styles.langButton}>
-          <Ionicons name="language" size={24} color="#888" />
-          <Text style={styles.langText}>{getCurrentLanguage()}</Text>
+        <TouchableOpacity>
+          <Ionicons name="menu" size={24} color="#888" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.dropdown}
@@ -137,29 +126,17 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 24,
   },
-  langButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    padding: 8,
-    backgroundColor: "rgba(136, 136, 136, 0.1)",
-    borderRadius: 8,
-  },
-  langText: {
-    color: "#888",
-    fontSize: 14,
-    fontWeight: "500",
-  },
   dropdown: {
     borderWidth: 1,
     borderColor: "rgb(44, 44, 44)",
     borderRadius: 29,
-    padding: 5,
+    padding: 2,
     paddingHorizontal: 20,
     flexDirection: "row",
     alignItems: "center",
