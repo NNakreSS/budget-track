@@ -15,7 +15,8 @@
     "accounts": "Accounts",
     "addNewAccount": "Add New Account",
     "settings": "Settings",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "language": "Language"
   },
   "accounts": {
     "types": {

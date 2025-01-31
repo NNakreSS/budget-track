@@ -15,7 +15,8 @@
     "accounts": "Hesaplar",
     "addNewAccount": "Yeni Hesap Ekle",
     "settings": "Ayarlar",
-    "confirm": "Onayla"
+    "confirm": "Onayla",
+    "language": "Dil"
   },
   "accounts": {
     "types": {
