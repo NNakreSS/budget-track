@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import CustomDatePicker from "../Common/CustomDatePicker";
+import { useBalanceStore } from "../../store/useBalanceStore";
 
 type OptionType = {
   label: "predicted" | "current" | "hidden";
@@ -13,16 +14,17 @@ type OptionType = {
 
 export default function BalanceOverview() {
   const { t } = useTranslation();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [currentDate, setCurrentDate] = useState("");
-  const [selectedOption, setSelectedOption] = useState<
-    "predicted" | "current" | "hidden"
-  >("predicted");
   const [showOptions, setShowOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const [calculatedAmount] = useState(15000.75);
+  const selectedDate = useBalanceStore((state) => state.selectedDate);
+  const selectedViewType = useBalanceStore((state) => state.selectedViewType);
+  const calculatedAmount = useBalanceStore((state) => state.calculatedAmount);
+  const setSelectedDate = useBalanceStore((state) => state.setSelectedDate);
+  const setSelectedViewType = useBalanceStore(
+    (state) => state.setSelectedViewType
+  );
 
   const options: OptionType[] = [
     {
@@ -57,23 +59,17 @@ export default function BalanceOverview() {
       .join(", ");
   };
 
-  useEffect(() => {
-    setCurrentDate(formatDate(selectedDate));
-  }, [selectedDate]);
-
   const navigateMonth = (direction: "forward" | "back") => {
     const newDate = new Date(selectedDate);
     const currentMonth = newDate.getMonth();
 
     if (direction === "forward") {
-      // Eğer Aralık ayındaysa, Ocak'a geç
       if (currentMonth === 11) {
         newDate.setMonth(0);
       } else {
         newDate.setMonth(currentMonth + 1);
       }
     } else {
-      // Eğer Ocak ayındaysa, Aralık'a geç
       if (currentMonth === 0) {
         newDate.setMonth(11);
       } else {
@@ -81,14 +77,13 @@ export default function BalanceOverview() {
       }
     }
 
-    // Geçiş animasyonu efekti
     setIsTransitioning(true);
     setSelectedDate(newDate);
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
   const renderAmount = () => {
-    if (selectedOption === "hidden") {
+    if (selectedViewType === "hidden") {
       return "******";
     }
     return `₺${calculatedAmount.toLocaleString("tr-TR", {
@@ -104,13 +99,15 @@ export default function BalanceOverview() {
         onPress={() => setShowOptions(!showOptions)}
       >
         <Ionicons
-          name={options.find((o) => o.label === selectedOption)?.icon || "help"}
+          name={
+            options.find((o) => o.label === selectedViewType)?.icon || "help"
+          }
           size={16}
           color="#888"
         />
         <Text style={styles.balanceLabel}>
           {t(
-            options.find((o) => o.label === selectedOption)?.translationKey ||
+            options.find((o) => o.label === selectedViewType)?.translationKey ||
               ""
           )}
         </Text>
@@ -138,10 +135,10 @@ export default function BalanceOverview() {
                   key={option.label}
                   style={[
                     styles.optionItem,
-                    selectedOption === option.label && styles.selectedItem,
+                    selectedViewType === option.label && styles.selectedItem,
                   ]}
                   onPress={() => {
-                    setSelectedOption(option.label);
+                    setSelectedViewType(option.label);
                     setShowOptions(false);
                   }}
                 >
@@ -169,11 +166,20 @@ export default function BalanceOverview() {
           style={styles.navigationButton}
         >
           <Ionicons name="chevron-back" size={24} color="rgb(179, 179, 179)" />
+          {selectedDate.getMonth() === 0 && (
+            <Text style={styles.monthIndicator}>
+              {
+                formatDate(new Date(selectedDate.getFullYear(), 11, 1)).split(
+                  ","
+                )[0]
+              }
+            </Text>
+          )}
         </TouchableOpacity>
         <Text
           style={[
             styles.balanceAmount,
-            selectedOption === "hidden" && styles.hiddenAmount,
+            selectedViewType === "hidden" && styles.hiddenAmount,
             isTransitioning && styles.transitioningAmount,
           ]}
         >
@@ -188,6 +194,15 @@ export default function BalanceOverview() {
             size={24}
             color="rgb(179, 179, 179)"
           />
+          {selectedDate.getMonth() === 11 && (
+            <Text style={styles.monthIndicator}>
+              {
+                formatDate(new Date(selectedDate.getFullYear(), 0, 1)).split(
+                  ","
+                )[0]
+              }
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -195,7 +210,7 @@ export default function BalanceOverview() {
         style={[styles.dateButton, isTransitioning && styles.transitioningDate]}
         onPress={() => setShowDatePicker(true)}
       >
-        <Text style={styles.dateText}>{currentDate}</Text>
+        <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
       </TouchableOpacity>
 
       <CustomDatePicker
