@@ -1,8 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 export default function AddButton() {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.footer}>
       <TouchableOpacity style={styles.addButton}>
@@ -11,7 +14,7 @@ export default function AddButton() {
           size={24}
           style={{ transform: [{ rotate: "45deg" }] }}
         />
-        <Text style={styles.addButtonText}>Gelir Ekle</Text>
+        <Text style={styles.addButtonText}>{t("common.add")}</Text>
       </TouchableOpacity>
     </View>
   );

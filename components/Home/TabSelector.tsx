@@ -1,12 +1,18 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 
 interface TabSelectorProps {
   activeTab: "income" | "expense";
   setActiveTab: (tab: "income" | "expense") => void;
 }
 
-export default function TabSelector({ activeTab, setActiveTab }: TabSelectorProps) {
+export default function TabSelector({
+  activeTab,
+  setActiveTab,
+}: TabSelectorProps) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.tabsContainer}>
       <TouchableOpacity
@@ -19,14 +25,11 @@ export default function TabSelector({ activeTab, setActiveTab }: TabSelectorProp
             activeTab === "income" && styles.activeTabText,
           ]}
         >
-          Gelir
+          {t("tabs.income")}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[
-          styles.tab,
-          activeTab === "expense" && styles.activeTabExpense,
-        ]}
+        style={[styles.tab, activeTab === "expense" && styles.activeTabExpense]}
         onPress={() => setActiveTab("expense")}
       >
         <Text
@@ -35,7 +38,7 @@ export default function TabSelector({ activeTab, setActiveTab }: TabSelectorProp
             activeTab === "expense" && styles.activeTabText,
           ]}
         >
-          Gider
+          {t("tabs.expense")}
         </Text>
       </TouchableOpacity>
     </View>
