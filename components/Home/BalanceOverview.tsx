@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import CustomDatePicker from "../Common/CustomDatePicker";
 
 type OptionType = {
@@ -14,29 +14,32 @@ type OptionType = {
 export default function BalanceOverview() {
   const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState("");
-  const [selectedOption, setSelectedOption] = useState<"predicted" | "current" | "hidden">("predicted");
+  const [selectedOption, setSelectedOption] = useState<
+    "predicted" | "current" | "hidden"
+  >("predicted");
   const [showOptions, setShowOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [calculatedAmount] = useState(15000.75);
+
   const options: OptionType[] = [
     {
       label: "predicted",
       icon: "calendar",
       translationKey: "balance.predicted",
-      descriptionKey: "balance.predictedDesc"
+      descriptionKey: "balance.predictedDesc",
     },
     {
       label: "current",
       icon: "cash",
       translationKey: "balance.current",
-      descriptionKey: "balance.currentDesc"
+      descriptionKey: "balance.currentDesc",
     },
     {
       label: "hidden",
       icon: "eye-off",
       translationKey: "balance.hidden",
-      descriptionKey: "balance.hiddenDesc"
+      descriptionKey: "balance.hiddenDesc",
     },
   ];
 
@@ -76,7 +79,10 @@ export default function BalanceOverview() {
           color="#888"
         />
         <Text style={styles.balanceLabel}>
-          {t(options.find((o) => o.label === selectedOption)?.translationKey || '')}
+          {t(
+            options.find((o) => o.label === selectedOption)?.translationKey ||
+              ""
+          )}
         </Text>
         <Entypo
           name={showOptions ? "chevron-thin-up" : "chevron-thin-down"}
@@ -94,7 +100,9 @@ export default function BalanceOverview() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.optionsContainer}>
-              <Text style={styles.modalTitle}>{t('balance.calculationType')}</Text>
+              <Text style={styles.modalTitle}>
+                {t("balance.calculationType")}
+              </Text>
               {options.map((option) => (
                 <TouchableOpacity
                   key={option.label}
@@ -110,7 +118,9 @@ export default function BalanceOverview() {
                   <View style={styles.optionContent}>
                     <Ionicons name={option.icon} size={18} color="#888" />
                     <View style={styles.optionTextContainer}>
-                      <Text style={styles.optionTitle}>{t(option.translationKey)}</Text>
+                      <Text style={styles.optionTitle}>
+                        {t(option.translationKey)}
+                      </Text>
                       <Text style={styles.optionDescription}>
                         {t(option.descriptionKey)}
                       </Text>
@@ -238,8 +248,8 @@ const styles = StyleSheet.create({
   },
   balanceAmount: {
     color: "white",
-    fontSize: 48,
-    fontWeight: "semibold",
+    fontSize: 42,
+    fontWeight: "400",
     marginHorizontal: 20,
   },
   dateButton: {
