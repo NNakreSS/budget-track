@@ -4,15 +4,16 @@ import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import SectionCard from "@/components/Settings/SectionCard";
+import SelectBox from "@/components/Common/SelectBox";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "tr" ? "en" : "tr";
-    i18n.changeLanguage(newLang);
-  };
+  const languageOptions = [
+    { label: "Türkçe", value: "tr" },
+    { label: "English", value: "en" },
+  ];
 
   return (
     <>
@@ -27,15 +28,19 @@ export default function Settings() {
       </View>
 
       <SectionCard title={t("settings.system")}>
-        <TouchableOpacity style={styles.settingItem} onPress={toggleLanguage}>
+        <View style={styles.settingItem}>
           <View style={styles.settingLeft}>
             <Ionicons name="language" size={24} color="white" />
             <Text style={styles.settingText}>{t("common.language")}</Text>
           </View>
-          <Text style={styles.settingValue}>
-            {i18n.language === "tr" ? "Türkçe" : "English"}
-          </Text>
-        </TouchableOpacity>
+          <View style={styles.selectBoxContainer}>
+            <SelectBox
+              value={i18n.language}
+              options={languageOptions}
+              onChange={(newLang) => i18n.changeLanguage(newLang)}
+            />
+          </View>
+        </View>
       </SectionCard>
     </>
   );
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "400",
     color: "white",
   },
@@ -72,11 +77,10 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   settingText: {
-    fontSize: 14,
+    fontSize: 22,
     color: "white",
   },
-  settingValue: {
-    fontSize: 14,
-    color: "rgba(255,255,255,0.6)",
+  selectBoxContainer: {
+    minWidth: 120,
   },
 });
