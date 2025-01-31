@@ -13,12 +13,14 @@ type OptionType = {
 
 export default function BalanceOverview() {
   const { t } = useTranslation();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentDate, setCurrentDate] = useState("");
   const [selectedOption, setSelectedOption] = useState<
     "predicted" | "current" | "hidden"
   >("predicted");
   const [showOptions, setShowOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const [calculatedAmount] = useState(15000.75);
 
@@ -43,19 +45,47 @@ export default function BalanceOverview() {
     },
   ];
 
-  useEffect(() => {
-    const date = new Date();
+  const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
     };
-    const formattedDate = date
+    return date
       .toLocaleDateString("tr-TR", options)
       .toUpperCase()
       .split(" ")
       .join(", ");
-    setCurrentDate(formattedDate);
-  }, []);
+  };
+
+  useEffect(() => {
+    setCurrentDate(formatDate(selectedDate));
+  }, [selectedDate]);
+
+  const navigateMonth = (direction: "forward" | "back") => {
+    const newDate = new Date(selectedDate);
+    const currentMonth = newDate.getMonth();
+
+    if (direction === "forward") {
+      // Eğer Aralık ayındaysa, Ocak'a geç
+      if (currentMonth === 11) {
+        newDate.setMonth(0);
+      } else {
+        newDate.setMonth(currentMonth + 1);
+      }
+    } else {
+      // Eğer Ocak ayındaysa, Aralık'a geç
+      if (currentMonth === 0) {
+        newDate.setMonth(11);
+      } else {
+        newDate.setMonth(currentMonth - 1);
+      }
+    }
+
+    // Geçiş animasyonu efekti
+    setIsTransitioning(true);
+    setSelectedDate(newDate);
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
 
   const renderAmount = () => {
     if (selectedOption === "hidden") {
@@ -134,18 +164,25 @@ export default function BalanceOverview() {
       </Modal>
 
       <View style={styles.balanceRow}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigateMonth("back")}
+          style={styles.navigationButton}
+        >
           <Ionicons name="chevron-back" size={24} color="rgb(179, 179, 179)" />
         </TouchableOpacity>
         <Text
           style={[
             styles.balanceAmount,
             selectedOption === "hidden" && styles.hiddenAmount,
+            isTransitioning && styles.transitioningAmount,
           ]}
         >
           {renderAmount()}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigateMonth("forward")}
+          style={styles.navigationButton}
+        >
           <Ionicons
             name="chevron-forward"
             size={24}
@@ -153,8 +190,9 @@ export default function BalanceOverview() {
           />
         </TouchableOpacity>
       </View>
+
       <TouchableOpacity
-        style={styles.dateButton}
+        style={[styles.dateButton, isTransitioning && styles.transitioningDate]}
         onPress={() => setShowDatePicker(true)}
       >
         <Text style={styles.dateText}>{currentDate}</Text>
@@ -163,18 +201,11 @@ export default function BalanceOverview() {
       <CustomDatePicker
         isVisible={showDatePicker}
         onClose={() => setShowDatePicker(false)}
-        onSelect={(selectedDate) => {
-          const formattedDate = selectedDate
-            .toLocaleDateString("tr-TR", {
-              year: "numeric",
-              month: "long",
-            })
-            .toUpperCase()
-            .split(" ")
-            .join(", ");
-          setCurrentDate(formattedDate);
+        onSelect={(date) => {
+          setSelectedDate(date);
+          setShowDatePicker(false);
         }}
-        selectedDate={new Date()}
+        selectedDate={selectedDate}
         showDay={false}
         showMonth={true}
         showYear={true}
@@ -281,5 +312,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(179, 179, 179, 0.3)",
     width: "100%",
+  },
+  navigationButton: {
+    padding: 8,
+    position: "relative",
+  },
+  monthIndicator: {
+    position: "absolute",
+    bottom: -15,
+    color: "rgba(179, 179, 179, 0.6)",
+    fontSize: 10,
+    width: 60,
+    textAlign: "center",
+    left: -14,
+  },
+  transitioningAmount: {
+    opacity: 0.5,
+    transform: [{ scale: 0.98 }],
+  },
+  transitioningDate: {
+    opacity: 0.7,
   },
 });
