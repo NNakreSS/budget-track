@@ -1,39 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
+import { useTranslation } from 'react-i18next';
 import CustomDatePicker from "../Common/CustomDatePicker";
 
-// Seçenekler için tip tanımı
 type OptionType = {
-  label: "Öngörülen" | "Güncel" | "Gizli";
+  label: "predicted" | "current" | "hidden";
   icon: keyof typeof Ionicons.glyphMap;
-  description: string;
+  translationKey: string;
+  descriptionKey: string;
 };
 
 export default function BalanceOverview() {
+  const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState("");
-  const [selectedOption, setSelectedOption] = useState<
-    "Öngörülen" | "Güncel" | "Gizli"
-  >("Öngörülen");
+  const [selectedOption, setSelectedOption] = useState<"predicted" | "current" | "hidden">("predicted");
   const [showOptions, setShowOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [calculatedAmount] = useState(15000.75);
   const options: OptionType[] = [
     {
-      label: "Öngörülen",
+      label: "predicted",
       icon: "calendar",
-      description: "Ay sonuna kadar beklenen toplam",
+      translationKey: "balance.predicted",
+      descriptionKey: "balance.predictedDesc"
     },
     {
-      label: "Güncel",
+      label: "current",
       icon: "cash",
-      description: "Şu ana kadar gerçekleşen işlemler",
+      translationKey: "balance.current",
+      descriptionKey: "balance.currentDesc"
     },
     {
-      label: "Gizli",
+      label: "hidden",
       icon: "eye-off",
-      description: "Miktarı gizle",
+      translationKey: "balance.hidden",
+      descriptionKey: "balance.hiddenDesc"
     },
   ];
 
@@ -52,7 +55,7 @@ export default function BalanceOverview() {
   }, []);
 
   const renderAmount = () => {
-    if (selectedOption === "Gizli") {
+    if (selectedOption === "hidden") {
       return "******";
     }
     return `₺${calculatedAmount.toLocaleString("tr-TR", {
@@ -72,7 +75,9 @@ export default function BalanceOverview() {
           size={16}
           color="#888"
         />
-        <Text style={styles.balanceLabel}>{selectedOption}</Text>
+        <Text style={styles.balanceLabel}>
+          {t(options.find((o) => o.label === selectedOption)?.translationKey || '')}
+        </Text>
         <Entypo
           name={showOptions ? "chevron-thin-up" : "chevron-thin-down"}
           size={12}
@@ -89,7 +94,7 @@ export default function BalanceOverview() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.optionsContainer}>
-              <Text style={styles.modalTitle}>Hesaplama Türü</Text>
+              <Text style={styles.modalTitle}>{t('balance.calculationType')}</Text>
               {options.map((option) => (
                 <TouchableOpacity
                   key={option.label}
@@ -105,9 +110,9 @@ export default function BalanceOverview() {
                   <View style={styles.optionContent}>
                     <Ionicons name={option.icon} size={18} color="#888" />
                     <View style={styles.optionTextContainer}>
-                      <Text style={styles.optionTitle}>{option.label}</Text>
+                      <Text style={styles.optionTitle}>{t(option.translationKey)}</Text>
                       <Text style={styles.optionDescription}>
-                        {option.description}
+                        {t(option.descriptionKey)}
                       </Text>
                     </View>
                   </View>
@@ -125,7 +130,7 @@ export default function BalanceOverview() {
         <Text
           style={[
             styles.balanceAmount,
-            selectedOption === "Gizli" && styles.hiddenAmount,
+            selectedOption === "hidden" && styles.hiddenAmount,
           ]}
         >
           {renderAmount()}
@@ -266,21 +271,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(179, 179, 179, 0.3)",
     width: "100%",
-  },
-  selectedItemText: {
-    color: "white",
-    fontWeight: "500",
-  },
-  confirmButton: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginTop: 24,
-    alignItems: "center",
-  },
-  confirmButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
   },
 });

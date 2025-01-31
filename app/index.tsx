@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Image } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import Header from "@/components/Home/Header";
 import BalanceOverview from "@/components/Home/BalanceOverview";
 import TransactionManager from "@/components/Home/TransactionManager";
