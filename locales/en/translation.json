@@ -16,7 +16,8 @@
     "addNewAccount": "Add New Account",
     "settings": "Settings",
     "confirm": "Confirm",
-    "language": "Language"
+    "language": "Language",
+    "theme": "Theme"
   },
   "accounts": {
     "types": {
@@ -83,6 +84,10 @@
     "invoice": "Invoice"
   },
   "settings": {
-    "system": "System"
+    "system": "System",
+    "theme": {
+      "dark": "Dark",
+      "light": "Light"
+    }
   }
 }

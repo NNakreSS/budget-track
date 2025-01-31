@@ -16,7 +16,8 @@
     "addNewAccount": "Yeni Hesap Ekle",
     "settings": "Ayarlar",
     "confirm": "Onayla",
-    "language": "Dil"
+    "language": "Dil",
+    "theme": "Tema"
   },
   "accounts": {
     "types": {
@@ -83,6 +84,10 @@
     "invoice": "Fatura"
   },
   "settings": {
-    "system": "Sistem"
+    "system": "Sistem",
+    "theme": {
+      "dark": "Koyu",
+      "light": "Açık"
+    }
   }
 }
