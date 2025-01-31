@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-  Modal,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
+import CustomDatePicker from "../Common/CustomDatePicker";
 
 // Seçenekler için tip tanımı
 type OptionType = {
@@ -22,6 +16,7 @@ export default function BalanceOverview() {
     "Öngörülen" | "Güncel" | "Gizli"
   >("Öngörülen");
   const [showOptions, setShowOptions] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [calculatedAmount] = useState(15000.75);
   const options: OptionType[] = [
@@ -144,7 +139,32 @@ export default function BalanceOverview() {
           />
         </TouchableOpacity>
       </View>
-      <Text style={styles.dateText}>{currentDate}</Text>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={styles.dateText}>{currentDate}</Text>
+      </TouchableOpacity>
+
+      <CustomDatePicker
+        isVisible={showDatePicker}
+        onClose={() => setShowDatePicker(false)}
+        onSelect={(selectedDate) => {
+          const formattedDate = selectedDate
+            .toLocaleDateString("tr-TR", {
+              year: "numeric",
+              month: "long",
+            })
+            .toUpperCase()
+            .split(" ")
+            .join(", ");
+          setCurrentDate(formattedDate);
+        }}
+        selectedDate={new Date()}
+        showDay={false}
+        showMonth={true}
+        showYear={true}
+      />
     </View>
   );
 }
@@ -161,11 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-  },
-  fullScreenOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.7)",
-    zIndex: 999,
   },
   modalOverlay: {
     flex: 1,
@@ -223,7 +238,7 @@ const styles = StyleSheet.create({
     fontWeight: "semibold",
     marginHorizontal: 20,
   },
-  dateText: {
+  dateButton: {
     color: "#888",
     backgroundColor: "rgb(33, 33, 33)",
     paddingVertical: 4,
@@ -231,6 +246,10 @@ const styles = StyleSheet.create({
     borderRadius: 27,
     fontSize: 12,
     marginTop: 10,
+  },
+  dateText: {
+    color: "#888",
+    fontSize: 12,
   },
   hiddenAmount: {
     color: "#888",
@@ -241,5 +260,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 16,
     textAlign: "center",
+  },
+  selectedItem: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+  },
+  selectedItemText: {
+    color: "white",
+    fontWeight: "500",
+  },
+  confirmButton: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 24,
+    alignItems: "center",
+  },
+  confirmButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
