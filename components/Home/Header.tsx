@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Entypo from '@expo/vector-icons/Entypo';
+import { useTranslation } from 'react-i18next';
 
 // Hesap tipi için tip tanımı
 type AccountType = {
@@ -41,15 +42,24 @@ const mockAccounts: AccountType[] = [
 ];
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<AccountType>(
     mockAccounts[0]
   );
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'tr' ? 'en' : 'tr';
+    i18n.changeLanguage(newLang);
+  };
+
   return (
     <>
       <View style={styles.header}>
-        <Ionicons name="beer-outline" size={24} color="white" />
+        <TouchableOpacity onPress={toggleLanguage} style={styles.langButton}>
+          <Ionicons name="language" size={24} color="#888" />
+          <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.dropdown}
           onPress={() => setShowAccountSelector(true)}
@@ -73,7 +83,7 @@ export default function Header() {
           />
           <View style={styles.accountDrawer}>
             <View style={styles.drawerHandle} />
-            <Text style={styles.drawerTitle}>Hesaplar</Text>
+            <Text style={styles.drawerTitle}>{t('common.accounts')}</Text>
 
             {/* Hesap Listesi */}
             {mockAccounts.map((account) => (
@@ -101,7 +111,7 @@ export default function Header() {
             {/* Hesap Ekle Butonu */}
             <TouchableOpacity style={styles.addAccountButton}>
               <Ionicons name="add-circle-outline" size={24} color="white" />
-              <Text style={styles.addAccountText}>Yeni Hesap Ekle</Text>
+              <Text style={styles.addAccountText}>{t('common.addNewAccount')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -116,6 +126,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 24,
+  },
+  langButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    padding: 8,
+    backgroundColor: "rgba(136, 136, 136, 0.1)",
+    borderRadius: 8,
+  },
+  langText: {
+    color: "#888",
+    fontSize: 14,
+    fontWeight: "500",
   },
   dropdown: {
     borderWidth: 1,
