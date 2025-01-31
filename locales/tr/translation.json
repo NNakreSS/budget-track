@@ -8,7 +8,10 @@
     "cancel": "İptal",
     "save": "Kaydet",
     "delete": "Sil",
-    "edit": "Düzenle"
+    "edit": "Düzenle",
+    "accounts": "Hesaplar",
+    "addNewAccount": "Yeni Hesap Ekle",
+    "settings": "Ayarlar"
   },
   "balance": {
     "calculationType": "Hesaplama Türü",
