@@ -5,10 +5,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import SectionCard from "@/components/Settings/SectionCard";
 import SelectBox from "@/components/Common/SelectBox";
+import ThemeSwitch from "@/components/Common/ThemeSwitch";
+import { useThemeStore } from "@/store/theme";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const { theme } = useThemeStore();
 
   const languageOptions = [
     { label: "Türkçe", value: "tr" },
@@ -22,16 +25,20 @@ export default function Settings() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={theme.colors.text.primary} />
         </TouchableOpacity>
-        <Text style={styles.title}>{t("common.settings")}</Text>
+        <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+          {t("common.settings")}
+        </Text>
       </View>
 
       <SectionCard title={t("settings.system")}>
-        <View style={styles.settingItem}>
+        <View style={[styles.settingItem, { borderBottomColor: theme.colors.border.primary }]}>
           <View style={styles.settingLeft}>
-            <Ionicons name="language" size={24} color="white" />
-            <Text style={styles.settingText}>{t("common.language")}</Text>
+            <Ionicons name="language" size={24} color={theme.colors.text.primary} />
+            <Text style={[styles.settingText, { color: theme.colors.text.primary }]}>
+              {t("common.language")}
+            </Text>
           </View>
           <View style={styles.selectBoxContainer}>
             <SelectBox
@@ -40,6 +47,16 @@ export default function Settings() {
               onChange={(newLang) => i18n.changeLanguage(newLang)}
             />
           </View>
+        </View>
+
+        <View style={[styles.settingItem, { borderBottomColor: theme.colors.border.primary }]}>
+          <View style={styles.settingLeft}>
+            <Ionicons name="contrast" size={24} color={theme.colors.text.primary} />
+            <Text style={[styles.settingText, { color: theme.colors.text.primary }]}>
+              {t("common.theme")}
+            </Text>
+          </View>
+          <ThemeSwitch />
         </View>
       </SectionCard>
     </>
@@ -58,10 +75,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "400",
-    color: "white",
-  },
-  content: {
-    padding: 10,
   },
   settingItem: {
     flexDirection: "row",
@@ -69,7 +82,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.1)",
   },
   settingLeft: {
     flexDirection: "row",
@@ -78,7 +90,6 @@ const styles = StyleSheet.create({
   },
   settingText: {
     fontSize: 22,
-    color: "white",
   },
   selectBoxContainer: {
     minWidth: 120,
