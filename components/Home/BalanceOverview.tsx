@@ -50,16 +50,19 @@ export default function BalanceOverview() {
     },
   ];
 
+  const getMonthKey = (month: number): string => {
+    const months = [
+      'january', 'february', 'march', 'april',
+      'may', 'june', 'july', 'august',
+      'september', 'october', 'november', 'december'
+    ];
+    return months[month];
+  };
+
   const formatDate = (date: Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-    };
-    return date
-      .toLocaleDateString("tr-TR", options)
-      .toUpperCase()
-      .split(" ")
-      .join(", ");
+    const month = t(`months.${getMonthKey(date.getMonth())}`);
+    const year = date.getFullYear();
+    return `${month}, ${year}`;
   };
 
   const navigateMonth = (direction: "forward" | "back") => {

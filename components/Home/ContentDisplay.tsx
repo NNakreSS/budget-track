@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useFormatCurrency } from "@/utils/currency";
+import { useTranslation } from "react-i18next";
 
 interface ContentDisplayProps {
   activeTab: "income" | "expense";
 }
 
 // İşlem durumu için tip
-type TransactionStatus = "bekleniyor" | "ödendi";
+type TransactionStatus = "pending" | "paid";
 
 // İşlem tipi için interface
 interface Transaction {
@@ -21,7 +22,7 @@ interface Transaction {
   };
   amount: number;
   status: TransactionStatus;
-  dueDate?: string; // Fatura için son ödeme tarihi
+  dueDate?: string;
   isCompleted: boolean;
 }
 
@@ -31,24 +32,24 @@ const mockIncomeTransactions: Transaction[] = [
     id: "1",
     title: "Maaş",
     category: {
-      name: "Gelir",
+      name: "salary",
       icon: "cash",
       color: "#4CAF50",
     },
     amount: 45000,
-    status: "bekleniyor",
+    status: "pending",
     isCompleted: false,
   },
   {
     id: "2",
     title: "Kira Geliri",
     category: {
-      name: "Kira",
+      name: "rent",
       icon: "home",
       color: "#2196F3",
     },
     amount: 8500,
-    status: "ödendi",
+    status: "paid",
     isCompleted: true,
   },
 ];
@@ -59,44 +60,44 @@ const mockExpenseTransactions: Transaction[] = [
     id: "1",
     title: "Kredi Kartım",
     category: {
-      name: "K.Kartı",
+      name: "creditCard",
       icon: "card",
       color: "#FF69B4",
     },
     amount: 12000,
-    status: "bekleniyor",
+    status: "pending",
     isCompleted: false,
   },
   {
     id: "2",
     title: "X Kredi Kartım",
     category: {
-      name: "K.Kartı",
+      name: "creditCard",
       icon: "card",
       color: "#FF69B4",
     },
     amount: 35000,
-    status: "ödendi",
+    status: "paid",
     isCompleted: true,
   },
   {
     id: "3",
     title: "Telefon",
     category: {
-      name: "Fatura",
+      name: "invoice",
       icon: "document-text",
       color: "#FFD700",
     },
     amount: 500,
-    status: "ödendi",
+    status: "paid",
     dueDate: "1/12",
     isCompleted: true,
   },
 ];
 
 export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
+  const { t } = useTranslation();
   const formatCurrency = useFormatCurrency();
-  // İki ayrı state tanımı
   const [incomeTransactions, setIncomeTransactions] = useState<Transaction[]>(
     mockIncomeTransactions
   );
@@ -104,7 +105,6 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
     mockExpenseTransactions
   );
 
-  // Aktif tab'e göre doğru state'i seç
   const transactions =
     activeTab === "income" ? incomeTransactions : expenseTransactions;
   const setTransactions =
@@ -128,7 +128,6 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
         transaction.isCompleted && styles.completedCard,
       ]}
     >
-      {/* Sol taraf - Checkbox */}
       <TouchableOpacity
         style={styles.checkbox}
         onPress={() => toggleComplete(transaction.id)}
@@ -145,7 +144,6 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
         </View>
       </TouchableOpacity>
 
-      {/* Orta kısım - İçerik */}
       <View style={styles.cardContent}>
         <View style={styles.titleRow}>
           <Text style={styles.transactionTitle}>{transaction.title}</Text>
@@ -159,13 +157,12 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
           <Text
             style={[styles.categoryText, { color: transaction.category.color }]}
           >
-            {transaction.category.name}
+            {t(`categories.${transaction.category.name}`)}
             {transaction.dueDate && ` • ${transaction.dueDate}`}
           </Text>
         </View>
       </View>
 
-      {/* Sağ taraf - Miktar ve Durum */}
       <View style={styles.amountSection}>
         <Text
           style={[
@@ -179,14 +176,13 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
         <Text
           style={[
             styles.statusText,
-            { color: transaction.status === "ödendi" ? "#4CAF50" : "#FF9800" },
+            { color: transaction.status === "paid" ? "#4CAF50" : "#FF9800" },
           ]}
         >
-          {transaction.status}
+          {t(`transactions.status.${transaction.status}`)}
         </Text>
       </View>
 
-      {/* En sağ - Menü butonu */}
       <TouchableOpacity style={styles.menuButton}>
         <Entypo name="dots-three-vertical" size={16} color="#666" />
       </TouchableOpacity>
@@ -200,7 +196,7 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
       ) : (
         <View style={styles.emptyState}>
           <Text style={styles.emptyStateText}>
-            {activeTab === "income" ? "Gelir" : "Gider"} kaydı bulunamadı
+            {t(activeTab === "income" ? "tabs.noIncome" : "tabs.noExpense")}
           </Text>
         </View>
       )}
