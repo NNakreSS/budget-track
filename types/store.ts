@@ -1,4 +1,5 @@
 export type TransactionType = 'income' | 'expense';
+export type ViewType = 'predicted' | 'current';
 
 export interface Transaction {
   id: string;
@@ -22,13 +23,15 @@ export interface BalanceState {
   accounts: Account[];
   transactions: Transaction[];
   calculatedAmount: number;
-  selectedViewType: 'predicted' | 'current' | 'hidden';
+  viewType: ViewType;
+  isHidden: boolean;
   addTransaction: (transaction: Transaction) => void;
   updateTransaction: (id: string, transaction: Partial<Transaction>) => void;
   deleteTransaction: (id: string) => void;
   setSelectedDate: (date: Date) => void;
   setSelectedAccount: (account: Account) => void;
-  setSelectedViewType: (type: 'predicted' | 'current' | 'hidden') => void;
+  setViewType: (type: ViewType) => void;
+  toggleHidden: () => void;
   addAccount: (account: Account) => void;
   updateAccount: (id: string, account: Partial<Account>) => void;
   deleteAccount: (id: string) => void;
