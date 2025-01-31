@@ -4,9 +4,11 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import CustomDatePicker from "../Common/CustomDatePicker";
 import { useBalanceStore } from "../../store/useBalanceStore";
+import { formatCurrency } from "../../utils/currency";
+import { ViewType } from "../../types/store";
 
 type OptionType = {
-  label: "predicted" | "current" | "hidden";
+  label: ViewType | "hidden";
   icon: keyof typeof Ionicons.glyphMap;
   translationKey: string;
   descriptionKey: string;
@@ -19,12 +21,12 @@ export default function BalanceOverview() {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const selectedDate = useBalanceStore((state) => state.selectedDate);
-  const selectedViewType = useBalanceStore((state) => state.selectedViewType);
+  const viewType = useBalanceStore((state) => state.viewType);
+  const isHidden = useBalanceStore((state) => state.isHidden);
   const calculatedAmount = useBalanceStore((state) => state.calculatedAmount);
   const setSelectedDate = useBalanceStore((state) => state.setSelectedDate);
-  const setSelectedViewType = useBalanceStore(
-    (state) => state.setSelectedViewType
-  );
+  const setViewType = useBalanceStore((state) => state.setViewType);
+  const toggleHidden = useBalanceStore((state) => state.toggleHidden);
 
   const options: OptionType[] = [
     {
@@ -82,14 +84,21 @@ export default function BalanceOverview() {
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
-  const renderAmount = () => {
-    if (selectedViewType === "hidden") {
-      return "******";
+  const getActiveOption = () => {
+    if (isHidden) return "hidden";
+    return viewType;
+  };
+
+  const handleOptionSelect = (option: OptionType) => {
+    if (option.label === "hidden") {
+      toggleHidden();
+    } else {
+      setViewType(option.label);
+      if (isHidden) {
+        toggleHidden();
+      }
     }
-    return `₺${calculatedAmount.toLocaleString("tr-TR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    setShowOptions(false);
   };
 
   return (
@@ -100,15 +109,15 @@ export default function BalanceOverview() {
       >
         <Ionicons
           name={
-            options.find((o) => o.label === selectedViewType)?.icon || "help"
+            options.find((o) => o.label === getActiveOption())?.icon || "help"
           }
           size={16}
           color="#888"
         />
         <Text style={styles.balanceLabel}>
           {t(
-            options.find((o) => o.label === selectedViewType)?.translationKey ||
-              ""
+            options.find((o) => o.label === getActiveOption())
+              ?.translationKey || ""
           )}
         </Text>
         <Entypo
@@ -135,12 +144,9 @@ export default function BalanceOverview() {
                   key={option.label}
                   style={[
                     styles.optionItem,
-                    selectedViewType === option.label && styles.selectedItem,
+                    option.label === getActiveOption() && styles.selectedItem,
                   ]}
-                  onPress={() => {
-                    setSelectedViewType(option.label);
-                    setShowOptions(false);
-                  }}
+                  onPress={() => handleOptionSelect(option)}
                 >
                   <View style={styles.optionContent}>
                     <Ionicons name={option.icon} size={18} color="#888" />
@@ -179,11 +185,11 @@ export default function BalanceOverview() {
         <Text
           style={[
             styles.balanceAmount,
-            selectedViewType === "hidden" && styles.hiddenAmount,
+            isHidden && styles.hiddenAmount,
             isTransitioning && styles.transitioningAmount,
           ]}
         >
-          {renderAmount()}
+          {formatCurrency(calculatedAmount)}
         </Text>
         <TouchableOpacity
           onPress={() => navigateMonth("forward")}
