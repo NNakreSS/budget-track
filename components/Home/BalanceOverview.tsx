@@ -173,15 +173,6 @@ export default function BalanceOverview() {
           style={styles.navigationButton}
         >
           <Ionicons name="chevron-back" size={24} color="rgb(179, 179, 179)" />
-          {selectedDate.getMonth() === 0 && (
-            <Text style={styles.monthIndicator}>
-              {
-                formatDate(new Date(selectedDate.getFullYear(), 11, 1)).split(
-                  ","
-                )[0]
-              }
-            </Text>
-          )}
         </TouchableOpacity>
         <Text
           style={[
@@ -201,15 +192,6 @@ export default function BalanceOverview() {
             size={24}
             color="rgb(179, 179, 179)"
           />
-          {selectedDate.getMonth() === 11 && (
-            <Text style={styles.monthIndicator}>
-              {
-                formatDate(new Date(selectedDate.getFullYear(), 0, 1)).split(
-                  ","
-                )[0]
-              }
-            </Text>
-          )}
         </TouchableOpacity>
       </View>
 
