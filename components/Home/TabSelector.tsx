@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 4,
     alignItems: "center",
   },
   activeTab: {
