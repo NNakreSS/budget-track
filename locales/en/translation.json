@@ -1,0 +1,38 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "balance": "Balance",
+    "income": "Income",
+    "expense": "Expense",
+    "add": "Add",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
+  },
+  "balance": {
+    "calculationType": "Calculation Type",
+    "predicted": "Predicted",
+    "current": "Current",
+    "hidden": "Hidden",
+    "predictedDesc": "Expected total until end of month",
+    "currentDesc": "Transactions up to now",
+    "hiddenDesc": "Hide amount"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "newTransaction": "New Transaction",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "description": "Description"
+  },
+  "categories": {
+    "food": "Food",
+    "transport": "Transport",
+    "shopping": "Shopping",
+    "bills": "Bills",
+    "entertainment": "Entertainment",
+    "other": "Other"
+  }
+} 

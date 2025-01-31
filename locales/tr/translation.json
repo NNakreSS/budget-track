@@ -1,0 +1,38 @@
+{
+  "common": {
+    "welcome": "Hoş Geldiniz",
+    "balance": "Bakiye",
+    "income": "Gelir",
+    "expense": "Gider",
+    "add": "Ekle",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle"
+  },
+  "balance": {
+    "calculationType": "Hesaplama Türü",
+    "predicted": "Öngörülen",
+    "current": "Güncel",
+    "hidden": "Gizli",
+    "predictedDesc": "Ay sonuna kadar beklenen toplam",
+    "currentDesc": "Şu ana kadar gerçekleşen işlemler",
+    "hiddenDesc": "Miktarı gizle"
+  },
+  "transactions": {
+    "title": "İşlemler",
+    "newTransaction": "Yeni İşlem",
+    "amount": "Miktar",
+    "date": "Tarih",
+    "category": "Kategori",
+    "description": "Açıklama"
+  },
+  "categories": {
+    "food": "Yemek",
+    "transport": "Ulaşım",
+    "shopping": "Alışveriş",
+    "bills": "Faturalar",
+    "entertainment": "Eğlence",
+    "other": "Diğer"
+  }
+} 
