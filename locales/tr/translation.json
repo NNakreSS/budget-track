@@ -13,6 +13,37 @@
     "addNewAccount": "Yeni Hesap Ekle",
     "settings": "Ayarlar"
   },
+  "accounts": {
+    "types": {
+      "personal": "Bireysel",
+      "business": "İşletme"
+    },
+    "names": {
+      "personal": "Bireysel",
+      "business": "Dükkan",
+      "investment": "Yatırım"
+    }
+  },
+  "months": {
+    "january": "OCAK",
+    "february": "ŞUBAT",
+    "march": "MART",
+    "april": "NİSAN",
+    "may": "MAYIS",
+    "june": "HAZİRAN",
+    "july": "TEMMUZ",
+    "august": "AĞUSTOS",
+    "september": "EYLÜL",
+    "october": "EKİM",
+    "november": "KASIM",
+    "december": "ARALIK"
+  },
+  "tabs": {
+    "income": "Gelir",
+    "expense": "Gider",
+    "noIncome": "Gelir kaydı bulunamadı",
+    "noExpense": "Gider kaydı bulunamadı"
+  },
   "balance": {
     "calculationType": "Hesaplama Türü",
     "predicted": "Öngörülen",
@@ -28,7 +59,11 @@
     "amount": "Miktar",
     "date": "Tarih",
     "category": "Kategori",
-    "description": "Açıklama"
+    "description": "Açıklama",
+    "status": {
+      "pending": "bekleniyor",
+      "paid": "ödendi"
+    }
   },
   "categories": {
     "food": "Yemek",
@@ -36,6 +71,10 @@
     "shopping": "Alışveriş",
     "bills": "Faturalar",
     "entertainment": "Eğlence",
-    "other": "Diğer"
+    "other": "Diğer",
+    "salary": "Maaş",
+    "rent": "Kira",
+    "creditCard": "K.Kartı",
+    "invoice": "Fatura"
   }
 } 

@@ -13,6 +13,37 @@
     "addNewAccount": "Add New Account",
     "settings": "Settings"
   },
+  "accounts": {
+    "types": {
+      "personal": "Personal",
+      "business": "Business"
+    },
+    "names": {
+      "personal": "Personal",
+      "business": "Shop",
+      "investment": "Investment"
+    }
+  },
+  "months": {
+    "january": "JANUARY",
+    "february": "FEBRUARY",
+    "march": "MARCH",
+    "april": "APRIL",
+    "may": "MAY",
+    "june": "JUNE",
+    "july": "JULY",
+    "august": "AUGUST",
+    "september": "SEPTEMBER",
+    "october": "OCTOBER",
+    "november": "NOVEMBER",
+    "december": "DECEMBER"
+  },
+  "tabs": {
+    "income": "Income",
+    "expense": "Expense",
+    "noIncome": "No income records found",
+    "noExpense": "No expense records found"
+  },
   "balance": {
     "calculationType": "Calculation Type",
     "predicted": "Predicted",
@@ -28,7 +59,11 @@
     "amount": "Amount",
     "date": "Date",
     "category": "Category",
-    "description": "Description"
+    "description": "Description",
+    "status": {
+      "pending": "pending",
+      "paid": "paid"
+    }
   },
   "categories": {
     "food": "Food",
@@ -36,6 +71,10 @@
     "shopping": "Shopping",
     "bills": "Bills",
     "entertainment": "Entertainment",
-    "other": "Other"
+    "other": "Other",
+    "salary": "Salary",
+    "rent": "Rent",
+    "creditCard": "Credit Card",
+    "invoice": "Invoice"
   }
 } 
