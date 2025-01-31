@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "400",
-    color: "white",
+    color: "rgba(255, 255, 255, 0.3)",
+    textTransform: "uppercase",
   },
 });
