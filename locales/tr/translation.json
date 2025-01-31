@@ -2,6 +2,9 @@
   "common": {
     "welcome": "Hoş Geldiniz",
     "balance": "Bakiye",
+    "selectDate": "Tarih Seç",
+    "month": "Ay",
+    "year": "Yıl",
     "income": "Gelir",
     "expense": "Gider",
     "add": "Ekle",
@@ -11,7 +14,8 @@
     "edit": "Düzenle",
     "accounts": "Hesaplar",
     "addNewAccount": "Yeni Hesap Ekle",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "confirm": "Onayla"
   },
   "accounts": {
     "types": {
@@ -77,4 +81,4 @@
     "creditCard": "K.Kartı",
     "invoice": "Fatura"
   }
-} 
+}

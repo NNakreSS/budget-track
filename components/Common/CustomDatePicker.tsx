@@ -5,10 +5,10 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Platform,
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 interface CustomDatePickerProps {
   isVisible: boolean;
@@ -36,19 +36,21 @@ export default function CustomDatePicker({
   const [tempDate, setTempDate] = React.useState(selectedDate);
 
   const months = [
-    "OCAK",
-    "ŞUBAT",
-    "MART",
-    "NİSAN",
-    "MAYIS",
-    "HAZİRAN",
-    "TEMMUZ",
-    "AĞUSTOS",
-    "EYLÜL",
-    "EKİM",
-    "KASIM",
-    "ARALIK",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
   ];
+
+  const { t } = useTranslation();
 
   const years = Array.from(
     { length: maxDate.getFullYear() - minDate.getFullYear() + 1 },
@@ -82,7 +84,7 @@ export default function CustomDatePicker({
         <View style={styles.container}>
           <View style={styles.pickerContainer}>
             <View style={styles.header}>
-              <Text style={styles.title}>Tarih Seç</Text>
+              <Text style={styles.title}>{t("common.selectDate")}</Text>
               <TouchableOpacity onPress={onClose}>
                 <Ionicons name="close" size={24} color="#888" />
               </TouchableOpacity>
@@ -95,7 +97,7 @@ export default function CustomDatePicker({
             >
               {showMonth && (
                 <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>Ay</Text>
+                  <Text style={styles.sectionTitle}>{t("common.month")}</Text>
                   <View style={styles.optionsGrid}>
                     {months.map((month, index) => (
                       <TouchableOpacity
@@ -126,7 +128,7 @@ export default function CustomDatePicker({
 
               {showYear && (
                 <View style={[styles.section, styles.yearSection]}>
-                  <Text style={styles.sectionTitle}>Yıl</Text>
+                  <Text style={styles.sectionTitle}>{t("common.year")}</Text>
                   <View style={styles.optionsGrid}>
                     {years.map((year) => (
                       <TouchableOpacity
@@ -157,7 +159,7 @@ export default function CustomDatePicker({
 
               {showDay && (
                 <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>Gün</Text>
+                  <Text style={styles.sectionTitle}>{t("common.day")}</Text>
                   <View style={styles.daysGrid}>
                     {days.map((day) => (
                       <TouchableOpacity
@@ -190,7 +192,9 @@ export default function CustomDatePicker({
               style={styles.confirmButton}
               onPress={handleConfirm}
             >
-              <Text style={styles.confirmButtonText}>Tamam</Text>
+              <Text style={styles.confirmButtonText}>
+                {t("common.confirm")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

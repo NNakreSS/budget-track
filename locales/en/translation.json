@@ -2,6 +2,9 @@
   "common": {
     "welcome": "Welcome",
     "balance": "Balance",
+    "selectDate": "Select Date",
+    "month": "Month",
+    "year": "Year",
     "income": "Income",
     "expense": "Expense",
     "add": "Add",
@@ -11,7 +14,8 @@
     "edit": "Edit",
     "accounts": "Accounts",
     "addNewAccount": "Add New Account",
-    "settings": "Settings"
+    "settings": "Settings",
+    "confirm": "Confirm"
   },
   "accounts": {
     "types": {
@@ -77,4 +81,4 @@
     "creditCard": "Credit Card",
     "invoice": "Invoice"
   }
-} 
+}
