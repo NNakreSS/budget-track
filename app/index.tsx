@@ -7,12 +7,12 @@ import AddButton from "@/components/Home/AddButton";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView className="bg-background flex-1">
-          <View className="flex-1 p-4">
-      <Header />
-      <BalanceOverview />
-      <TransactionManager />
-      <AddButton />
+    <SafeAreaView className="flex-1">
+      <View className="bg-background flex-1 p-4">
+        <Header />
+        <BalanceOverview />
+        <TransactionManager />
+        <AddButton />
       </View>
     </SafeAreaView>
   );
