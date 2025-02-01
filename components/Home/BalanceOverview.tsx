@@ -146,7 +146,12 @@ export default function BalanceOverview() {
         animationType="fade"
         onRequestClose={() => setShowOptions(false)}
       >
-        <View className="flex-1 items-center justify-center bg-black/70">
+        <TouchableOpacity
+          activeOpacity={1}
+          className="absolute inset-0 bg-black/80"
+          onPress={() => setShowOptions(false)}
+        />
+        <View className="flex-1 items-center justify-center">
           <View className="w-[80%] max-w-[400px] rounded-lg">
             <View className="bg-card rounded-xl p-4 border border-border shadow-lg shadow-black">
               <Text className="text-muted-foreground text-sm mb-4 text-center">
