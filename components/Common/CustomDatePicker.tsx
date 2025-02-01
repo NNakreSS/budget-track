@@ -119,13 +119,13 @@ export default function CustomDatePicker({
                         }
                       >
                         <Text
-                          className={`${
+                          className={`uppercase ${
                             tempDate.getMonth() === index
                               ? "font-medium text-foreground"
                               : "text-muted-foreground text-sm"
                           }`}
                         >
-                          {month}
+                          {t(`months.${month}`)}
                         </Text>
                       </TouchableOpacity>
                     ))}
