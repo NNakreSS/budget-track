@@ -7,35 +7,18 @@ export default function AddButton() {
   const { t } = useTranslation();
 
   return (
-    <View style={styles.footer}>
-      <TouchableOpacity style={styles.addButton}>
+    <View className="mt-5">
+      <TouchableOpacity className="bg-foreground flex-row items-center justify-center py-4 rounded-2xl">
         <Ionicons
           name="arrow-up"
           size={24}
           style={{ transform: [{ rotate: "45deg" }] }}
+          className="text-background"
         />
-        <Text style={styles.addButtonText}>{t("common.add")}</Text>
+        <Text className="text-background ml-2 font-semibold text-xl">
+          {t("common.add")}
+        </Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  footer: {
-    marginTop: 20,
-  },
-  addButton: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 15,
-    borderRadius: 12,
-  },
-  addButtonText: {
-    color: "black",
-    fontSize: 16,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-});
