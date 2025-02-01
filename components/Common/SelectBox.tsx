@@ -31,7 +31,7 @@ export default function SelectBox({
     <View className="relative">
       <TouchableOpacity
         onPress={() => setIsOpen(!isOpen)}
-        className="flex-row items-center justify-between border border-muted-foreground/20 p-2 rounded-md"
+        className="flex-row items-center justify-between border border-border p-2 rounded-md"
       >
         <Text className="text-foreground">
           {selectedOption?.label || placeholder || "Seçiniz"}
@@ -44,7 +44,7 @@ export default function SelectBox({
       </TouchableOpacity>
 
       {isOpen && (
-        <View className="absolute top-[110%] left-0 right-0 bg-card border border-muted-foreground/20 rounded-md z-[1000]">
+        <View className="absolute top-[110%] left-0 right-0 bg-card border border-border rounded-md z-[1000]">
           <FlatList
             data={options}
             keyExtractor={(item) => item.value}
@@ -53,9 +53,7 @@ export default function SelectBox({
             renderItem={({ item }) => (
               <TouchableOpacity
                 className={`p-2 rounded-md ${
-                  item.value === value
-                    ? "bg-muted"
-                    : "border-muted-foreground/20"
+                  item.value === value ? "bg-muted" : "border-border"
                 }`}
                 onPress={() => {
                   onChange(item.value);

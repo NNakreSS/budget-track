@@ -7,7 +7,7 @@ export default function ThemeSwitch() {
   const { colorScheme, setColorScheme } = useColorScheme();
 
   return (
-    <View className="flex-row gap-2 border border-muted-foreground/20 rounded-full py-1 px-2 bg-card">
+    <View className="flex-row gap-2 border border-border rounded-full py-1 px-2 bg-card">
       <TouchableOpacity
         className={`p-2 px-4 rounded-full ${
           colorScheme === "dark" && "bg-accent"
