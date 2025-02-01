@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,7 @@ import CustomDatePicker from "../Common/CustomDatePicker";
 import { useBalanceStore } from "../../store/useBalanceStore";
 import { useFormatCurrency } from "../../utils/currency";
 import { ViewType } from "../../types/store";
+import { Animated } from "react-native";
 
 type OptionType = {
   label: ViewType | "hidden";
@@ -114,6 +115,51 @@ export default function BalanceOverview() {
     setShowOptions(false);
   };
 
+  // Animated values for balance text and date button
+  const balanceOpacity = useRef(new Animated.Value(1)).current;
+  const balanceScale = useRef(new Animated.Value(1)).current;
+  const dateButtonOpacity = useRef(new Animated.Value(1)).current;
+  
+  useEffect(() => {
+    if (isTransitioning) {
+      Animated.parallel([
+        Animated.timing(balanceOpacity, {
+          toValue: 0.5,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(balanceScale, {
+          toValue: 0.95,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(dateButtonOpacity, {
+          toValue: 0.7,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(balanceOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(balanceScale, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(dateButtonOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [isTransitioning, balanceOpacity, balanceScale, dateButtonOpacity]);
+
   return (
     <View className="mb-6 items-center">
       <TouchableOpacity
@@ -202,15 +248,17 @@ export default function BalanceOverview() {
             className="text-muted-foreground"
           />
         </TouchableOpacity>
-        <Text
+        <Animated.Text
+          style={{
+            opacity: balanceOpacity,
+            transform: [{ scale: balanceScale }],
+          }}
           className={`text-foreground text-4xl font-light mx-5 ${
             isHidden ? "text-muted-foreground tracking-wider" : ""
-          } ${
-            isTransitioning ? "opacity-50 scale-95" : ""
-          } transition-all duration-300`}
+          }`}
         >
           {formatCurrency(calculatedAmount)}
-        </Text>
+        </Animated.Text>
         <TouchableOpacity
           onPress={() => navigateMonth("forward")}
           className="p-2"
@@ -224,17 +272,17 @@ export default function BalanceOverview() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        className={`bg-muted border border-foreground/20 px-4 py-1 rounded-full mt-2 ${
-          isTransitioning ? "opacity-70" : ""
-        } transition-opacity duration-300`}
-        onPress={() => setShowDatePicker(true)}
-        activeOpacity={0.7}
-      >
-        <Text className="text-muted-foreground text-sm">
-          {formatDate(selectedDate)}
-        </Text>
-      </TouchableOpacity>
+      <Animated.View style={{ opacity: dateButtonOpacity }}>
+        <TouchableOpacity
+          className="bg-muted border border-foreground/20 px-4 py-1 rounded-full mt-2"
+          onPress={() => setShowDatePicker(true)}
+          activeOpacity={0.7}
+        >
+          <Text className="text-muted-foreground text-sm">
+            {formatDate(selectedDate)}
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
 
       <CustomDatePicker
         isVisible={showDatePicker}
