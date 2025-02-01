@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -57,6 +58,28 @@ export default function Header() {
   const [selectedAccount, setSelectedAccount] = useState<AccountType>(
     mockAccounts[0]
   );
+  const slideAnim = useRef(new Animated.Value(300)).current;
+
+  // Modal açma animasyonu
+  const openModal = () => {
+    setShowAccountSelector(true);
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Modal kapama animasyonu
+  const closeModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowAccountSelector(false);
+    });
+  };
 
   return (
     <>
@@ -66,7 +89,7 @@ export default function Header() {
         </TouchableOpacity>
         <TouchableOpacity
           className="flex-row gap-2 items-center justify-center border border-border rounded-full py-1 px-4 bg-card"
-          onPress={() => setShowAccountSelector(true)}
+          onPress={openModal}
         >
           <Text className="text-foreground">
             {t(`accounts.names.${selectedAccount.nameKey}`)}
@@ -89,16 +112,19 @@ export default function Header() {
       <Modal
         visible={showAccountSelector}
         transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowAccountSelector(false)}
+        animationType="none"
+        onRequestClose={closeModal}
       >
+        <TouchableOpacity
+          activeOpacity={1}
+          className="absolute inset-0 bg-black/80"
+          onPress={closeModal}
+        />
         <View className="flex-1 justify-end">
-          <Pressable
-            className="absolute inset-0 bg-black opacity-50"
-            onPress={() => setShowAccountSelector(false)}
-          />
-
-          <View className="bg-card rounded-t-2xl p-4">
+          <Animated.View
+            style={{ transform: [{ translateY: slideAnim }] }}
+            className="bg-card rounded-t-2xl p-4"
+          >
             <View className="h-2 w-10 bg-border rounded-full self-center my-2" />
             <Text className="text-foreground text-lg font-bold mb-4">
               {t("common.accounts")}
@@ -113,7 +139,7 @@ export default function Header() {
                 }`}
                 onPress={() => {
                   setSelectedAccount(account);
-                  setShowAccountSelector(false);
+                  closeModal();
                 }}
               >
                 <View className="flex-row items-center gap-2">
@@ -147,7 +173,7 @@ export default function Header() {
                 {t("common.addNewAccount")}
               </Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
       </Modal>
     </>
