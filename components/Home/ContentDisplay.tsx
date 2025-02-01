@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useFormatCurrency } from "@/utils/currency";
 import { useTranslation } from "react-i18next";
@@ -123,79 +123,81 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
   const renderTransactionCard = (transaction: Transaction) => (
     <View
       key={transaction.id}
-      style={[
-        styles.transactionCard,
-        transaction.isCompleted && styles.completedCard,
-      ]}
+      className={`flex-row items-center py-3 border-b border-border ${
+        transaction.isCompleted && "opacity-60"
+      }`}
     >
       <TouchableOpacity
-        style={styles.checkbox}
+        className="w-5 h-5 mr-3 justify-center items-center"
         onPress={() => toggleComplete(transaction.id)}
       >
         <View
-          style={[
-            styles.checkboxInner,
-            transaction.isCompleted && styles.checkboxChecked,
-          ]}
+          className={`w-[18px] h-[18px] rounded border-2 border-border justify-center items-center ${
+            transaction.isCompleted && "bg-primary border-primary"
+          }`}
         >
           {transaction.isCompleted && (
-            <Ionicons name="checkmark" size={12} color="white" />
+            <Ionicons name="checkmark" size={12} className="text-foreground" />
           )}
         </View>
       </TouchableOpacity>
 
-      <View style={styles.cardContent}>
-        <View style={styles.titleRow}>
-          <Text style={styles.transactionTitle}>{transaction.title}</Text>
+      <View className="flex-1 mr-3">
+        <View className="flex-row items-center mb-1">
+          <Text className="text-foreground text-base font-medium">
+            {transaction.title}
+          </Text>
         </View>
-        <View style={styles.categoryRow}>
+
+        <View className="flex-row items-center space-x-1">
           <Ionicons
             name={transaction.category.icon}
             size={14}
             color={transaction.category.color}
           />
-          <Text
-            style={[styles.categoryText, { color: transaction.category.color }]}
-          >
+          <Text className="text-xs ml-1 text-muted-foreground">
             {t(`categories.${transaction.category.name}`)}
+
             {transaction.dueDate && ` • ${transaction.dueDate}`}
           </Text>
         </View>
       </View>
 
-      <View style={styles.amountSection}>
+      <View className="items-end mr-3">
         <Text
-          style={[
-            styles.amountText,
-            { color: activeTab === "income" ? "#4CAF50" : "white" },
-          ]}
+          className={`text-base font-medium mb-1 ${
+            activeTab === "income" ? "text-primary" : "text-destructive"
+          }`}
         >
           {activeTab === "expense" ? "-" : "+"}
           {formatCurrency(transaction.amount)}
         </Text>
         <Text
-          style={[
-            styles.statusText,
-            { color: transaction.status === "paid" ? "#4CAF50" : "#FF9800" },
-          ]}
+          className={`text-xs lowercase ${
+            transaction.status === "paid" ? "text-primary" : "text-orange-500"
+          }`}
         >
           {t(`transactions.status.${transaction.status}`)}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.menuButton}>
-        <Entypo name="dots-three-vertical" size={16} color="#666" />
+      <TouchableOpacity className="p-1">
+        <Entypo
+          name="dots-three-vertical"
+          size={16}
+          className="text-muted-foreground"
+        />
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.contentContainer}>
+    <View className="flex-1">
       {transactions.length > 0 ? (
         transactions.map(renderTransactionCard)
       ) : (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyStateText}>
+        <View className="flex-1 justify-center items-center py-8">
+          <Text className="text-base text-foreground">
             {t(activeTab === "income" ? "tabs.noIncome" : "tabs.noExpense")}
           </Text>
         </View>
@@ -203,92 +205,3 @@ export default function ContentDisplay({ activeTab }: ContentDisplayProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-  },
-  transactionCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.1)",
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    marginRight: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkboxInner: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#666",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkboxChecked: {
-    backgroundColor: "#4CAF50",
-    borderColor: "#4CAF50",
-  },
-  cardContent: {
-    flex: 1,
-    marginRight: 12,
-  },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
-  },
-  transactionTitle: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  categoryRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  categoryText: {
-    fontSize: 12,
-    marginLeft: 4,
-  },
-  amountSection: {
-    alignItems: "flex-end",
-    marginRight: 12,
-  },
-  amountText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 4,
-  },
-  statusText: {
-    fontSize: 12,
-    textTransform: "lowercase",
-  },
-  menuButton: {
-    padding: 4,
-  },
-  completedCard: {
-    opacity: 0.6,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 32,
-  },
-  emptyStateText: {
-    color: "#666",
-    fontSize: 16,
-  },
-  incomeAmount: {
-    color: "#4CAF50",
-  },
-});
