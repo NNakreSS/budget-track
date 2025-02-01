@@ -73,6 +73,11 @@ export default function CustomDatePicker({
       animationType="fade"
       onRequestClose={onClose}
     >
+      <TouchableOpacity
+        activeOpacity={1}
+        className="absolute inset-0 bg-black/80"
+        onPress={onClose}
+      />
       <View className="flex-1 justify-center items-center">
         <View className="w-[90%] max-w-[400px]">
           <View className="bg-card rounded-2xl p-4 border border-border max-h-[90%]">
