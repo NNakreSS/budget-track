@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 
 export default function SectionCard({
   children,
@@ -8,21 +8,11 @@ export default function SectionCard({
   title: string;
 }) {
   return (
-    <View style={styles.content}>
-      <Text style={styles.title}>{title}</Text>
+    <View className="p-2 flex-col gap-2 mt-4">
+      <Text className="text-sm font-semibold uppercase text-muted-foreground">
+        {title}
+      </Text>
       {children}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  content: {
-    padding: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "400",
-    color: "rgba(255, 255, 255, 0.3)",
-    textTransform: "uppercase",
-  },
-});

@@ -1,71 +1,29 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useThemeStore } from '@/store/theme';
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "nativewind";
 
 export default function ThemeSwitch() {
-  const { mode, theme, toggleTheme } = useThemeStore();
+  const { colorScheme, setColorScheme } = useColorScheme();
 
   return (
-    <View style={[
-      styles.container,
-      { backgroundColor: theme.colors.background.secondary }
-    ]}>
+    <View className="flex-row gap-2 border border-muted-foreground/20 rounded-full py-1 px-2 bg-card">
       <TouchableOpacity
-        style={[
-          styles.option,
-          mode === 'dark' && styles.selectedOption,
-          { backgroundColor: mode === 'dark' ? theme.colors.button.secondary : 'transparent' }
-        ]}
-        onPress={() => mode === 'light' && toggleTheme()}
+        className={`p-2 px-4 rounded-full ${
+          colorScheme === "dark" && "bg-accent"
+        }`}
+        onPress={() => colorScheme === "light" && setColorScheme("dark")}
       >
-        <Ionicons 
-          name="moon" 
-          size={20} 
-          color={mode === 'dark' ? theme.colors.text.primary : theme.colors.text.tertiary} 
-        />
+        <Ionicons name="moon" size={20} className="text-foreground" />
       </TouchableOpacity>
       <TouchableOpacity
-        style={[
-          styles.option,
-          mode === 'light' && styles.selectedOption,
-          { backgroundColor: mode === 'light' ? theme.colors.button.secondary : 'transparent' }
-        ]}
-        onPress={() => mode === 'dark' && toggleTheme()}
+        className={`p-2 px-4 rounded-full ${
+          colorScheme === "light" && "bg-accent"
+        }`}
+        onPress={() => colorScheme === "dark" && setColorScheme("light")}
       >
-        <Ionicons 
-          name="sunny" 
-          size={20} 
-          color={mode === 'light' ? theme.colors.text.primary : theme.colors.text.tertiary} 
-        />
+        <Ionicons name="sunny" size={20} className="text-foreground" />
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderRadius: 20,
-    padding: 4,
-    gap: 4,
-  },
-  option: {
-    padding: 8,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 36,
-    height: 36,
-  },
-  selectedOption: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-}); 
