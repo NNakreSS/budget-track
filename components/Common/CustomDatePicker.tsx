@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { Modal, View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 
@@ -80,43 +73,52 @@ export default function CustomDatePicker({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          <View style={styles.pickerContainer}>
-            <View style={styles.header}>
-              <Text style={styles.title}>{t("common.selectDate")}</Text>
+      <View className="flex-1 justify-center items-center">
+        <View className="w-[90%] max-w-[400px]">
+          <View className="bg-card rounded-2xl p-4 border border-border max-h-[90%]">
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-foreground text-lg font-medium">
+                {t("common.selectDate")}
+              </Text>
+
               <TouchableOpacity onPress={onClose}>
-                <Ionicons name="close" size={24} color="#888" />
+                <Ionicons
+                  name="close"
+                  size={24}
+                  className="text-muted-foreground"
+                />
               </TouchableOpacity>
             </View>
 
             <ScrollView
-              style={styles.pickerContent}
+              className="grow-0"
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}
+              contentContainerClassName="gap-4 pb-2"
             >
               {showMonth && (
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>{t("common.month")}</Text>
-                  <View style={styles.optionsGrid}>
+                <View className="gap-2">
+                  <Text className="text-muted-foreground text-sm">
+                    {t("common.month")}
+                  </Text>
+                  <View className="flex-row flex-wrap justify-start gap-2">
                     {months.map((month, index) => (
                       <TouchableOpacity
                         key={month}
-                        style={[
-                          styles.option,
-                          tempDate.getMonth() === index &&
-                            styles.selectedOption,
-                        ]}
+                        className={`p-2 px-4 rounded-lg ${
+                          tempDate.getMonth() === index
+                            ? "bg-foreground/5 border border-primary/80"
+                            : "border border-border"
+                        }`}
                         onPress={() =>
                           setTempDate(new Date(tempDate.setMonth(index)))
                         }
                       >
                         <Text
-                          style={[
-                            styles.optionText,
-                            tempDate.getMonth() === index &&
-                              styles.selectedOptionText,
-                          ]}
+                          className={`${
+                            tempDate.getMonth() === index
+                              ? "font-medium text-foreground"
+                              : "text-muted text-sm"
+                          }`}
                         >
                           {month}
                         </Text>
@@ -127,27 +129,29 @@ export default function CustomDatePicker({
               )}
 
               {showYear && (
-                <View style={[styles.section, styles.yearSection]}>
-                  <Text style={styles.sectionTitle}>{t("common.year")}</Text>
-                  <View style={styles.optionsGrid}>
+                <View className="gap-2">
+                  <Text className="text-muted-foreground text-sm">
+                    {t("common.year")}
+                  </Text>
+                  <View className="flex-row flex-wrap justify-start gap-2">
                     {years.map((year) => (
                       <TouchableOpacity
                         key={year}
-                        style={[
-                          styles.option,
-                          tempDate.getFullYear() === year &&
-                            styles.selectedOption,
-                        ]}
+                        className={`p-2 px-4 rounded-lg ${
+                          tempDate.getFullYear() === year
+                            ? "bg-foreground/5 border border-primary/80"
+                            : "border border-border"
+                        }`}
                         onPress={() =>
                           setTempDate(new Date(tempDate.setFullYear(year)))
                         }
                       >
                         <Text
-                          style={[
-                            styles.optionText,
-                            tempDate.getFullYear() === year &&
-                              styles.selectedOptionText,
-                          ]}
+                          className={`${
+                            tempDate.getFullYear() === year
+                              ? "font-medium text-foreground"
+                              : "text-muted text-sm"
+                          }`}
                         >
                           {year}
                         </Text>
@@ -158,26 +162,29 @@ export default function CustomDatePicker({
               )}
 
               {showDay && (
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>{t("common.day")}</Text>
-                  <View style={styles.daysGrid}>
+                <View className="gap-2">
+                  <Text className="text-muted-foreground text-sm">
+                    {t("common.day")}
+                  </Text>
+                  <View className="flex-row flex-wrap justify-start gap-2">
                     {days.map((day) => (
                       <TouchableOpacity
                         key={day}
-                        style={[
-                          styles.dayOption,
-                          tempDate.getDate() === day && styles.selectedOption,
-                        ]}
+                        className={`p-2 px-4 rounded-lg ${
+                          tempDate.getDate() === day
+                            ? "bg-foreground/5 border border-primary/80"
+                            : "border border-border"
+                        }`}
                         onPress={() =>
                           setTempDate(new Date(tempDate.setDate(day)))
                         }
                       >
                         <Text
-                          style={[
-                            styles.optionText,
-                            tempDate.getDate() === day &&
-                              styles.selectedOptionText,
-                          ]}
+                          className={`${
+                            tempDate.getDate() === day
+                              ? "font-medium text-foreground"
+                              : "text-muted text-sm"
+                          }`}
                         >
                           {day}
                         </Text>
@@ -189,10 +196,10 @@ export default function CustomDatePicker({
             </ScrollView>
 
             <TouchableOpacity
-              style={styles.confirmButton}
+              className="bg-primary/80 rounded-lg items-center p-3 mt-6"
               onPress={handleConfirm}
             >
-              <Text style={styles.confirmButtonText}>
+              <Text className="text-white text-xl font-medium">
                 {t("common.confirm")}
               </Text>
             </TouchableOpacity>
@@ -202,106 +209,3 @@ export default function CustomDatePicker({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.7)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  container: {
-    width: "90%",
-    maxWidth: 400,
-  },
-  pickerContainer: {
-    backgroundColor: "rgb(20, 21, 23)",
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(179, 179, 179, 0.3)",
-    maxHeight: "90%",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  title: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  pickerContent: {
-    flexGrow: 0,
-  },
-  scrollContent: {
-    gap: 24,
-    paddingBottom: 8,
-  },
-  section: {
-    gap: 12,
-  },
-  sectionTitle: {
-    color: "#888",
-    fontSize: 14,
-  },
-  yearSection: {
-    marginTop: 24,
-  },
-  optionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    gap: 8,
-  },
-  option: {
-    minWidth: 70,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "rgba(179, 179, 179, 0.3)",
-    alignItems: "center",
-  },
-  selectedOption: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderColor: "#4CAF50",
-  },
-  optionText: {
-    color: "#888",
-    fontSize: 14,
-  },
-  selectedOptionText: {
-    color: "white",
-    fontWeight: "500",
-  },
-  confirmButton: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginTop: 24,
-    alignItems: "center",
-  },
-  confirmButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  daysGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    gap: 8,
-  },
-  dayOption: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "rgba(179, 179, 179, 0.3)",
-  },
-});

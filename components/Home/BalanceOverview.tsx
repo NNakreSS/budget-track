@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import CustomDatePicker from "../Common/CustomDatePicker";
@@ -52,9 +52,18 @@ export default function BalanceOverview() {
 
   const getMonthKey = (month: number): string => {
     const months = [
-      'january', 'february', 'march', 'april',
-      'may', 'june', 'july', 'august',
-      'september', 'october', 'november', 'december'
+      "january",
+      "february",
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
     ];
     return months[month];
   };
@@ -106,9 +115,9 @@ export default function BalanceOverview() {
   };
 
   return (
-    <View style={styles.balanceContainer}>
+    <View className="mb-6 items-center">
       <TouchableOpacity
-        style={styles.selectorContainer}
+        className="flex-row items-center gap-2 active:opacity-70 mb-2"
         onPress={() => setShowOptions(!showOptions)}
       >
         <Ionicons
@@ -116,9 +125,9 @@ export default function BalanceOverview() {
             options.find((o) => o.label === getActiveOption())?.icon || "help"
           }
           size={16}
-          color="#888"
+          className="text-muted-foreground"
         />
-        <Text style={styles.balanceLabel}>
+        <Text className="text-muted-foreground text-sm">
           {t(
             options.find((o) => o.label === getActiveOption())
               ?.translationKey || ""
@@ -127,7 +136,7 @@ export default function BalanceOverview() {
         <Entypo
           name={showOptions ? "chevron-thin-up" : "chevron-thin-down"}
           size={12}
-          color="#888"
+          className="text-muted-foreground"
         />
       </TouchableOpacity>
 
@@ -137,28 +146,34 @@ export default function BalanceOverview() {
         animationType="fade"
         onRequestClose={() => setShowOptions(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.optionsContainer}>
-              <Text style={styles.modalTitle}>
+        <View className="flex-1 items-center justify-center bg-black/70">
+          <View className="w-[80%] max-w-[400px] rounded-lg">
+            <View className="bg-card rounded-xl p-4 border border-border shadow-lg shadow-black">
+              <Text className="text-muted-foreground text-sm mb-4 text-center">
                 {t("balance.calculationType")}
               </Text>
               {options.map((option) => (
                 <TouchableOpacity
                   key={option.label}
-                  style={[
-                    styles.optionItem,
-                    option.label === getActiveOption() && styles.selectedItem,
-                  ]}
+                  className={`p-3 px-4 rounded-xl border ${
+                    option.label === getActiveOption()
+                      ? "bg-foreground/10 border-foreground/30"
+                      : "border-transparent"
+                  } mb-2 last:mb-0`}
                   onPress={() => handleOptionSelect(option)}
+                  activeOpacity={0.7}
                 >
-                  <View style={styles.optionContent}>
-                    <Ionicons name={option.icon} size={18} color="#888" />
-                    <View style={styles.optionTextContainer}>
-                      <Text style={styles.optionTitle}>
+                  <View className="flex-row items-center gap-3">
+                    <Ionicons
+                      name={option.icon}
+                      size={18}
+                      className="text-muted-foreground"
+                    />
+                    <View className="flex-1">
+                      <Text className="text-foreground text-sm font-medium">
                         {t(option.translationKey)}
                       </Text>
-                      <Text style={styles.optionDescription}>
+                      <Text className="text-muted-foreground text-xs mt-1">
                         {t(option.descriptionKey)}
                       </Text>
                     </View>
@@ -170,39 +185,50 @@ export default function BalanceOverview() {
         </View>
       </Modal>
 
-      <View style={styles.balanceRow}>
+      <View className="flex-row items-center justify-center">
         <TouchableOpacity
           onPress={() => navigateMonth("back")}
-          style={styles.navigationButton}
+          className="p-2"
+          activeOpacity={0.7}
         >
-          <Ionicons name="chevron-back" size={24} color="rgb(179, 179, 179)" />
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            className="text-muted-foreground"
+          />
         </TouchableOpacity>
         <Text
-          style={[
-            styles.balanceAmount,
-            isHidden && styles.hiddenAmount,
-            isTransitioning && styles.transitioningAmount,
-          ]}
+          className={`text-foreground text-4xl font-light mx-5 ${
+            isHidden ? "text-muted-foreground tracking-wider" : ""
+          } ${
+            isTransitioning ? "opacity-50 scale-95" : ""
+          } transition-all duration-300`}
         >
           {formatCurrency(calculatedAmount)}
         </Text>
         <TouchableOpacity
           onPress={() => navigateMonth("forward")}
-          style={styles.navigationButton}
+          className="p-2"
+          activeOpacity={0.7}
         >
           <Ionicons
             name="chevron-forward"
             size={24}
-            color="rgb(179, 179, 179)"
+            className="text-muted-foreground"
           />
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity
-        style={[styles.dateButton, isTransitioning && styles.transitioningDate]}
+        className={`bg-muted border border-foreground/20 px-4 py-1 rounded-full mt-2 ${
+          isTransitioning ? "opacity-70" : ""
+        } transition-opacity duration-300`}
         onPress={() => setShowDatePicker(true)}
+        activeOpacity={0.7}
       >
-        <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
+        <Text className="text-muted-foreground text-sm">
+          {formatDate(selectedDate)}
+        </Text>
       </TouchableOpacity>
 
       <CustomDatePicker
@@ -220,124 +246,3 @@ export default function BalanceOverview() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  balanceContainer: {
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  balanceLabel: {
-    color: "#888",
-  },
-  selectorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.7)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContainer: {
-    width: "80%",
-    maxWidth: 400,
-  },
-  optionsContainer: {
-    backgroundColor: "rgba(20, 21, 23, 0.95)",
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(179, 179, 179, 0.3)",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  optionItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    width: 200,
-  },
-  optionContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  optionTextContainer: {
-    flex: 1,
-  },
-  optionTitle: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  optionDescription: {
-    color: "#888",
-    fontSize: 12,
-    marginTop: 4,
-  },
-  balanceRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  balanceAmount: {
-    color: "white",
-    fontSize: 42,
-    fontWeight: "400",
-    marginHorizontal: 20,
-  },
-  dateButton: {
-    color: "#888",
-    backgroundColor: "rgb(33, 33, 33)",
-    paddingVertical: 4,
-    paddingHorizontal: 16,
-    borderRadius: 27,
-    fontSize: 12,
-    marginTop: 10,
-  },
-  dateText: {
-    color: "#888",
-    fontSize: 12,
-  },
-  hiddenAmount: {
-    color: "#888",
-    letterSpacing: 2,
-  },
-  modalTitle: {
-    color: "#666",
-    fontSize: 14,
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  selectedItem: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(179, 179, 179, 0.3)",
-    width: "100%",
-  },
-  navigationButton: {
-    padding: 8,
-    position: "relative",
-  },
-  monthIndicator: {
-    position: "absolute",
-    bottom: -15,
-    color: "rgba(179, 179, 179, 0.6)",
-    fontSize: 10,
-    width: 60,
-    textAlign: "center",
-    left: -14,
-  },
-  transitioningAmount: {
-    opacity: 0.5,
-    transform: [{ scale: 0.98 }],
-  },
-  transitioningDate: {
-    opacity: 0.7,
-  },
-});
