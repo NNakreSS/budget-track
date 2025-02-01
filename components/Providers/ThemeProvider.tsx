@@ -17,7 +17,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
   const { colorScheme } = useColorScheme();
 
   return (
-    <ThemeContext.Provider value={{ theme: colorScheme }}>
+    <ThemeContext.Provider value={{ theme: colorScheme }} key={colorScheme}>
       <View style={themes[colorScheme ?? "dark"]} className="flex-1">
         {children}
       </View>
