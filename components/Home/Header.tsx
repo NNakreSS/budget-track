@@ -11,6 +11,14 @@ import { Ionicons } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
+import { cssInterop } from "nativewind";
+
+cssInterop(Entypo, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, fontSize: "accessible" },
+  },
+});
 
 // Hesap tipi için tip tanımı
 type AccountType = {
@@ -52,21 +60,29 @@ export default function Header() {
 
   return (
     <>
-      <View style={styles.header}>
+      <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity>
-          <Ionicons name="menu" size={24} color="#888" />
+          <Ionicons name="menu" size={24} className="text-foreground" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.dropdown}
+          className="flex-row gap-2 items-center justify-center border border-border rounded-full py-1 px-4 bg-card"
           onPress={() => setShowAccountSelector(true)}
         >
-          <Text style={styles.dropdownText}>
+          <Text className="text-foreground">
             {t(`accounts.names.${selectedAccount.nameKey}`)}
           </Text>
-          <Entypo name="chevron-thin-down" size={12} color="white" />
+          <Entypo
+            name="chevron-thin-down"
+            size={12}
+            className="text-foreground"
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push("/settings")}>
-          <Ionicons name="settings-outline" size={24} color="white" />
+          <Ionicons
+            name="settings-outline"
+            size={24}
+            className="text-foreground"
+          />
         </TouchableOpacity>
       </View>
 
@@ -76,44 +92,58 @@ export default function Header() {
         animationType="slide"
         onRequestClose={() => setShowAccountSelector(false)}
       >
-        <View style={styles.accountDrawerContainer}>
+        <View className="flex-1 justify-end">
           <Pressable
-            style={styles.accountDrawerOverlay}
+            className="absolute inset-0 bg-black opacity-50"
             onPress={() => setShowAccountSelector(false)}
           />
-          <View style={styles.accountDrawer}>
-            <View style={styles.drawerHandle} />
-            <Text style={styles.drawerTitle}>{t("common.accounts")}</Text>
+
+          <View className="bg-card rounded-t-2xl p-4">
+            <View className="h-2 w-10 bg-border rounded-full self-center my-2" />
+            <Text className="text-foreground text-lg font-bold mb-4">
+              {t("common.accounts")}
+            </Text>
 
             {/* Hesap Listesi */}
             {mockAccounts.map((account) => (
               <TouchableOpacity
                 key={account.id}
-                style={[
-                  styles.accountItem,
-                  selectedAccount.id === account.id && styles.selectedAccount,
-                ]}
+                className={`flex-row items-center justify-between p-4 rounded-lg ${
+                  selectedAccount.id === account.id && "bg-muted"
+                }`}
                 onPress={() => {
                   setSelectedAccount(account);
                   setShowAccountSelector(false);
                 }}
               >
-                <View style={styles.accountItemContent}>
-                  <Ionicons name={account.icon} size={24} color="white" />
-                  <Text style={styles.accountItemText}>
+                <View className="flex-row items-center gap-2">
+                  <Ionicons
+                    name={account.icon}
+                    size={24}
+                    className="text-foreground"
+                  />
+                  <Text className="text-foreground text-base">
                     {t(`accounts.names.${account.nameKey}`)}
                   </Text>
                 </View>
                 {selectedAccount.id === account.id && (
-                  <Ionicons name="checkmark" size={24} color="#4CAF50" />
+                  <Ionicons
+                    name="checkmark"
+                    size={24}
+                    className="text-primary"
+                  />
                 )}
               </TouchableOpacity>
             ))}
 
             {/* Hesap Ekle Butonu */}
-            <TouchableOpacity style={styles.addAccountButton}>
-              <Ionicons name="add-circle-outline" size={24} color="white" />
-              <Text style={styles.addAccountText}>
+            <TouchableOpacity className="flex-row items-center justify-center gap-2 py-4 px-4 mt-4 border rounded-lg border-border">
+              <Ionicons
+                name="add-circle-outline"
+                size={24}
+                className="text-foreground"
+              />
+              <Text className="text-foreground text-base">
                 {t("common.addNewAccount")}
               </Text>
             </TouchableOpacity>
@@ -123,93 +153,3 @@ export default function Header() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  dropdown: {
-    borderWidth: 1,
-    borderColor: "rgb(44, 44, 44)",
-    borderRadius: 29,
-    padding: 2,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  dropdownText: {
-    color: "rgba(240, 240, 243, 0.86)",
-    fontSize: 16,
-    marginRight: 5,
-  },
-  accountDrawerContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  accountDrawerOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  accountDrawer: {
-    backgroundColor: "rgb(20, 21, 23)",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 16,
-    paddingTop: 8,
-  },
-  drawerHandle: {
-    width: 40,
-    height: 4,
-    backgroundColor: "#666",
-    borderRadius: 2,
-    alignSelf: "center",
-    marginBottom: 16,
-  },
-  drawerTitle: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  accountItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-  },
-  selectedAccount: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-  },
-  accountItemContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  accountItemText: {
-    color: "white",
-    fontSize: 16,
-  },
-  addAccountButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    marginTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.1)",
-  },
-  addAccountText: {
-    color: "white",
-    fontSize: 16,
-  },
-});
