@@ -122,7 +122,7 @@ export default function CustomDatePicker({
                           className={`${
                             tempDate.getMonth() === index
                               ? "font-medium text-foreground"
-                              : "text-muted text-sm"
+                              : "text-muted-foreground text-sm"
                           }`}
                         >
                           {month}
@@ -155,7 +155,7 @@ export default function CustomDatePicker({
                           className={`${
                             tempDate.getFullYear() === year
                               ? "font-medium text-foreground"
-                              : "text-muted text-sm"
+                              : "text-muted-foreground text-sm"
                           }`}
                         >
                           {year}
