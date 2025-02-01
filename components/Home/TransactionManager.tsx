@@ -7,15 +7,9 @@ export default function TransactionManager() {
   const [activeTab, setActiveTab] = useState<"income" | "expense">("income");
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       <TabSelector activeTab={activeTab} setActiveTab={setActiveTab} />
       <ContentDisplay activeTab={activeTab} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
