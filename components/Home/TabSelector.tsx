@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 
 interface TabSelectorProps {
@@ -14,29 +14,33 @@ export default function TabSelector({
   const { t } = useTranslation();
 
   return (
-    <View style={styles.tabsContainer}>
+    <View className="flex-row bg-accent border border-border p-2 rounded-xl mb-4">
       <TouchableOpacity
-        style={[styles.tab, activeTab === "income" && styles.activeTab]}
+        className={`flex-1 items-center justify-center rounded-lg py-2 ${
+          activeTab === "income" && "bg-primary"
+        }`}
         onPress={() => setActiveTab("income")}
       >
         <Text
-          style={[
-            styles.tabText,
-            activeTab === "income" && styles.activeTabText,
-          ]}
+          className={`text-lg font-semibold ${
+            activeTab === "income" ? "text-foreground" : "text-muted-foreground"
+          }`}
         >
           {t("tabs.income")}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === "expense" && styles.activeTabExpense]}
+        className={`flex-1 items-center justify-center rounded-lg py-2 ${
+          activeTab === "expense" && "bg-destructive"
+        }`}
         onPress={() => setActiveTab("expense")}
       >
         <Text
-          style={[
-            styles.tabText,
-            activeTab === "expense" && styles.activeTabText,
-          ]}
+          className={`text-lg font-semibold ${
+            activeTab === "expense"
+              ? "text-foreground"
+              : "text-muted-foreground"
+          }`}
         >
           {t("tabs.expense")}
         </Text>
@@ -44,36 +48,3 @@ export default function TabSelector({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tabsContainer: {
-    flexDirection: "row",
-    backgroundColor: "rgb(20,21,23)",
-    borderRadius: 12,
-    marginBottom: 16,
-    padding: 6,
-    borderWidth: 1,
-    borderColor: "rgb(80, 80, 80)",
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 4,
-    alignItems: "center",
-  },
-  activeTab: {
-    backgroundColor: "rgba(226, 254, 83, 1)",
-    borderRadius: 6,
-  },
-  tabText: {
-    color: "rgba(240, 240, 243, 0.7)",
-    fontSize: 16,
-  },
-  activeTabText: {
-    color: "black",
-    fontWeight: "bold",
-  },
-  activeTabExpense: {
-    backgroundColor: "rgba(255, 123, 94, 1)",
-    borderRadius: 6,
-  },
-});
